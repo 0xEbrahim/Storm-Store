@@ -19,6 +19,11 @@ export class UserService {
   ) {}
 
   async create(createUserDto: CreateUserDto) {
+    // return await this.jwt.generateAccessToken({
+    //   id: '68a0c2e0b2f063a4829f23fd',
+    //   active: false,
+    //   role: 'ADMIN',
+    // });
     const userExist = await this.UserModel.findOne({
       email: createUserDto.email,
     });
