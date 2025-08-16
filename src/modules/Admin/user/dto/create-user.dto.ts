@@ -11,6 +11,7 @@ import {
   Length,
 } from 'class-validator';
 import { Gender, Roles } from '../Schema/user.schema';
+import { Exclude } from 'class-transformer';
 
 export class CreateUserDto {
   @IsString({ message: 'Your name should be a string value' })
