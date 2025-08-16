@@ -54,7 +54,7 @@ export class User {
   @Prop({ type: String })
   address: string;
 
-  @Prop({ type: Boolean })
+  @Prop({ type: Boolean, default: true })
   active: boolean;
 
   @Prop({ type: String })

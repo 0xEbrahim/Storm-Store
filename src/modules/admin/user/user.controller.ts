@@ -12,9 +12,10 @@ import {
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { AuthGuard } from '../../common/guards/Auth.guard';
+import { AuthGuard } from '../../../common/guards/Auth.guard';
 import { Role } from 'src/common/decorators/roles.decorator';
 import { Roles } from './Schema/user.schema';
+import type { Request } from 'express';
 
 @Controller('user')
 @Role(Roles.ADMIN)
@@ -41,8 +42,8 @@ export class UserController {
    * @route /api/v1/user
    */
   @Get()
-  findAll() {
-    return this.userService.findAll();
+  findAll(@Req() req: Request) {
+    return this.userService.findAll(req.query);
   }
 
   /**
