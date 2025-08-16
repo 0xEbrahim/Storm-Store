@@ -2,6 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 
+type payloadType = {
+  id: string;
+  role: string;
+};
+
 @Injectable()
 export class JWTService {
   constructor(
@@ -9,7 +14,7 @@ export class JWTService {
     private jwt: JwtService,
   ) {}
 
-  async generateAccessToken(payload: {}): Promise<string> {
+  async generateAccessToken(payload: payloadType): Promise<string> {
     const token = await this.jwt.signAsync(payload, {
       secret: this.config.get<string>('JWT_AC_SEC'),
       expiresIn: this.config.get<string>('JWT_AC_EXP'),
@@ -17,7 +22,7 @@ export class JWTService {
     return token;
   }
 
-  async generateRefreshToken(payload: {}): Promise<string> {
+  async generateRefreshToken(payload: payloadType): Promise<string> {
     const token = await this.jwt.signAsync(payload, {
       secret: this.config.get<string>('JWT_REF_SEC'),
       expiresIn: this.config.get<string>('JWT_REF_EXP'),
