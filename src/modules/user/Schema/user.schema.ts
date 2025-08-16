@@ -8,11 +8,6 @@ export enum Roles {
   USER = 'USER',
 }
 
-export enum ActiveStatus {
-  ACTIVE = 'ACTIVE',
-  INACTIVE = 'INACTIVE',
-}
-
 export enum Gender {
   MALE = 'MALE',
   FEMALE = 'FEMALE',
@@ -42,6 +37,7 @@ export class User {
     type: String,
     required: true,
     enum: Roles,
+    default: Roles.USER,
   })
   role: string;
 
@@ -57,8 +53,8 @@ export class User {
   @Prop({ type: String })
   address: string;
 
-  @Prop({ type: String, enum: ActiveStatus })
-  active: string;
+  @Prop({ type: Boolean })
+  active: boolean;
 
   @Prop({ type: String })
   verificationCode: string;
