@@ -12,14 +12,17 @@ import {
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { AuthGuard } from './guards/Auth.guard';
+import { AuthGuard } from '../../../common/guards/Auth.guard';
 import type { Request } from 'express';
+import { Role } from 'src/common/decorator/roles.decorator';
+import { Roles } from './Schema/user.schema';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
+  @Role(Roles.ADMIN)
   @UseGuards(AuthGuard)
   create(@Body() createUserDto: CreateUserDto, @Req() req: Request) {
     return this.userService.create(createUserDto);
