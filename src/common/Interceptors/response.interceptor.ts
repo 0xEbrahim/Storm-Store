@@ -31,7 +31,6 @@ export class ResponseInterceptor implements NestInterceptor {
           message: err.message || 'Internal server error',
           error: err.name || 'Error',
           timestamp: Date.now(),
-          version: 'v2',
           path: request.url,
           data: {},
         };
