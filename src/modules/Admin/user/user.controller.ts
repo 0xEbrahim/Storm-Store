@@ -18,13 +18,20 @@ import { Role } from 'src/common/decorator/roles.decorator';
 import { Roles } from './Schema/user.schema';
 
 @Controller('user')
+@Role(Roles.ADMIN)
+@UseGuards(AuthGuard)
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  /**
+   * @desc Admin creates user
+   * @param createUserDto
+   * @access Private [Admin]
+   * @method Post
+   * @route /api/v1/user
+   */
   @Post()
-  @Role(Roles.ADMIN)
-  @UseGuards(AuthGuard)
-  create(@Body() createUserDto: CreateUserDto, @Req() req: Request) {
+  create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
   }
 

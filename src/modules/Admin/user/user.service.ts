@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
@@ -14,6 +14,12 @@ export class UserService {
   ) {}
 
   async create(createUserDto: CreateUserDto) {
+    const userExist = await this.UserModel.findOne({
+      email: createUserDto.email,
+    });
+    if (userExist) {
+      throw new BadRequestException('Email is already exists.');
+    }
     return await this.UserModel.create(createUserDto);
   }
 
