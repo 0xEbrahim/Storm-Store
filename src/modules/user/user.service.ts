@@ -4,19 +4,21 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from './Schema/user.schema';
 import { Model } from 'mongoose';
+import { JWTService } from '../jwt/jwt.service';
 
 @Injectable()
 export class UserService {
+  constructor(
+    @InjectModel(User.name) private UserModel: Model<User>,
+    private jwt: JWTService,
+  ) {}
 
-  constructor(@InjectModel(User.name) private User : Model<User> ){}
-
-
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  async create(createUserDto: CreateUserDto) {
+    return await this.UserModel.create(createUserDto);
   }
 
-  findAll() {
-    return `This action returns all user`;
+  async findAll() {
+    return await this.UserModel.find();
   }
 
   findOne(id: number) {
