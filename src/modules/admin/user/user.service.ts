@@ -8,7 +8,8 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from './Schema/user.schema';
 import { Model } from 'mongoose';
-import { JWTService } from '../jwt/jwt.service';
+import { JWTService } from '../../jwt/jwt.service';
+import ApiFeatures from 'src/common/utils/APIFeatures';
 
 @Injectable()
 export class UserService {
@@ -18,6 +19,11 @@ export class UserService {
   ) {}
 
   async create(createUserDto: CreateUserDto) {
+    // return await this.jwt.generateAccessToken({
+    //   id: '68a0c2e0b2f063a4829f23fd',
+    //   active: false,
+    //   role: 'ADMIN',
+    // });
     const userExist = await this.UserModel.findOne({
       email: createUserDto.email,
     });
@@ -27,8 +33,14 @@ export class UserService {
     return await this.UserModel.create(createUserDto);
   }
 
-  async findAll() {
-    return await this.UserModel.find().select('-password -__v');
+  async findAll(q: any) {
+    const query = new ApiFeatures(this.UserModel.find({}), q)
+      .filter()
+      .limitFields()
+      .paginate()
+      .sort();
+    const users = await query.exec();
+    return { users, page: +q.page, size: users.length };
   }
 
   async findOne(id: string) {
