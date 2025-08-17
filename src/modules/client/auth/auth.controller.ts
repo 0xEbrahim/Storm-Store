@@ -1,10 +1,21 @@
-import { Body, Controller, HttpCode, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpCode,
+  Param,
+  Patch,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignUpDTO } from './dto/sign-up.dto';
 import { SignInDTO } from './dto/sign-In.dto';
 import { ForgotPasswordDTO } from './dto/forgot-password.dto';
 import { ParseObjectId } from 'src/common/pipes/parseObjectId.pipe';
 import { ResetPasswordDTO } from './dto/reset-password.dto';
+import { ChangePasswordDTO } from './dto/change-password.dto';
+import { AuthGuard } from 'src/common/guards/Auth.guard';
+import { User } from 'src/common/decorators/user.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -34,12 +45,24 @@ export class AuthController {
     return await this.authService.SignIn(signInDTO);
   }
 
+  /**
+   * @desc User requests to reset his forgotten password
+   * @access Public
+   * @method Post
+   * @route /api/v1/auth/forgot-password
+   */
   @Post('forgot-password')
   @HttpCode(200)
   async forgotPassword(@Body() ForgotPasswordDTO: ForgotPasswordDTO) {
     return await this.authService.forgotPassword(ForgotPasswordDTO);
   }
 
+  /**
+   * @desc User resets his forgotten password
+   * @access Public
+   * @method Post
+   * @route /api/v1/auth/reset-password/:code
+   */
   @Post('reset-password/:code')
   @HttpCode(200)
   async resetPassword(
@@ -47,5 +70,17 @@ export class AuthController {
     @Body() resetPasswordDTO: ResetPasswordDTO,
   ) {
     return await this.authService.resetPassword(code, resetPasswordDTO);
+  }
+
+  /**
+   *
+   */
+  @Patch('change-password')
+  @UseGuards(AuthGuard)
+  async changePassword(
+    @Body() ChangePasswordDTO: ChangePasswordDTO,
+    @User() user: any,
+  ) {
+    return this.authService.changePassword(ChangePasswordDTO, user.id);
   }
 }

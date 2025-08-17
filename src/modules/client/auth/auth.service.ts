@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import crypto from 'node:crypto';
 import { Model } from 'mongoose';
@@ -11,6 +15,8 @@ import { EmailService, EmailType } from 'src/modules/email/email.service';
 import { ConfigService } from '@nestjs/config';
 import path from 'node:path';
 import { ResetPasswordDTO } from './dto/reset-password.dto';
+import { ChangePasswordDTO } from './dto/change-password.dto';
+import { NotFoundError } from 'rxjs';
 
 @Injectable()
 export class AuthService {
@@ -82,5 +88,22 @@ export class AuthService {
     console.log(password);
     await user.save();
     return { message: 'Password updated successfully' };
+  }
+
+  async changePassword(
+    { oldPassword, newPassword }: ChangePasswordDTO,
+    userId: string,
+  ) {
+    /**
+     * TODO:
+     *  - Blacklist token
+     */
+    const user = await this.UserModel.findById(userId);
+    if (!user) throw new NotFoundException('User not found');
+    if (!(await user.comparePasswords(oldPassword)))
+      throw new BadRequestException('wrong old password');
+    user.password = newPassword;
+    await user.save();
+    return { data: { user }, message: 'Password updated successfully' };
   }
 }

@@ -7,6 +7,7 @@ import { UserModule as ClientUserModule } from './modules/client/user/user.modul
 import { AuthModule } from './modules/client/auth/auth.module';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { EjsAdapter } from '@nestjs-modules/mailer/dist/adapters/ejs.adapter';
+import { AdminCategoryModule } from './modules/admin/category/category.module';
 import path from 'node:path';
 
 @Module({
@@ -51,6 +52,7 @@ import path from 'node:path';
     ClientUserModule,
     JwtModule,
     AuthModule,
+    AdminCategoryModule,
   ],
 })
 export class AppModule {}
