@@ -8,6 +8,7 @@ import {
   Delete,
   UseGuards,
   Req,
+  HttpCode,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -17,10 +18,11 @@ import { Role } from 'src/common/decorators/roles.decorator';
 import { Roles } from './Schema/user.schema';
 import type { Request } from 'express';
 import { ParseObjectId } from 'src/common/pipes/parseObjectId.pipe';
+import { RolesGuard } from 'src/common/guards/Role.guard';
 
 @Controller('admin/user')
+@UseGuards(AuthGuard, RolesGuard)
 @Role(Roles.ADMIN)
-@UseGuards(AuthGuard)
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -32,6 +34,7 @@ export class UserController {
    * @route /api/v1/admin/user
    */
   @Post()
+  @HttpCode(201)
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
   }
@@ -43,6 +46,7 @@ export class UserController {
    * @route /api/v1/admin/user
    */
   @Get()
+  @HttpCode(200)
   findAll(@Req() req: Request) {
     return this.userService.findAll(req.query);
   }
@@ -54,6 +58,7 @@ export class UserController {
    * @route /api/v1/admin/user/:id
    */
   @Get(':id')
+  @HttpCode(200)
   findOne(@Param('id', ParseObjectId) id: string) {
     return this.userService.findOne(id);
   }
@@ -65,6 +70,7 @@ export class UserController {
    * @route /api/v1/admin/user/:id
    */
   @Patch(':id')
+  @HttpCode(200)
   update(
     @Param('id', ParseObjectId) id: string,
     @Body() updateUserDto: UpdateUserDto,
@@ -79,6 +85,7 @@ export class UserController {
    * @route /api/v1/admin/user/:id
    */
   @Delete(':id')
+  @HttpCode(200)
   remove(@Param('id', ParseObjectId) id: string) {
     return this.userService.remove(id);
   }
