@@ -16,6 +16,7 @@ import { ResetPasswordDTO } from './dto/reset-password.dto';
 import { ChangePasswordDTO } from './dto/change-password.dto';
 import { AuthGuard } from 'src/common/guards/Auth.guard';
 import { User } from 'src/common/decorators/user.decorator';
+import { ApiBearerAuth, ApiBody, ApiParam } from '@nestjs/swagger';
 
 @Controller('auth')
 export class AuthController {
@@ -27,6 +28,7 @@ export class AuthController {
    * @method Post
    * @route /api/v1/auth/sign-up
    */
+  @ApiBody({ type: SignUpDTO })
   @Post('sign-up')
   @HttpCode(201)
   async SignUp(@Body() signUpDTO: SignUpDTO) {
@@ -39,6 +41,7 @@ export class AuthController {
    * @method Post
    * @route /api/v1/auth/sign-in
    */
+  @ApiBody({ type: SignInDTO })
   @Post('sign-in')
   @HttpCode(200)
   async SignIn(@Body() signInDTO: SignInDTO) {
@@ -51,6 +54,7 @@ export class AuthController {
    * @method Post
    * @route /api/v1/auth/forgot-password
    */
+  @ApiBody({ type: ForgotPasswordDTO })
   @Post('forgot-password')
   @HttpCode(200)
   async forgotPassword(@Body() ForgotPasswordDTO: ForgotPasswordDTO) {
@@ -63,6 +67,8 @@ export class AuthController {
    * @method Post
    * @route /api/v1/auth/reset-password/:code
    */
+  @ApiParam({ name: 'code' })
+  @ApiBody({ type: ResetPasswordDTO })
   @Post('reset-password/:code')
   @HttpCode(200)
   async resetPassword(
@@ -75,6 +81,8 @@ export class AuthController {
   /**
    *
    */
+  @ApiBody({ type: ChangePasswordDTO })
+  @ApiBearerAuth()
   @Patch('change-password')
   @UseGuards(AuthGuard)
   async changePassword(

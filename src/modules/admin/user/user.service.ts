@@ -56,7 +56,6 @@ export class UserService {
   async update(id: string, updateUserDto: UpdateUserDto) {
     let user = await this.UserModel.findById(id);
     if (!user) throw new NotFoundException('User not found');
-    updateUserDto.password = undefined;
     user = await this.UserModel.findByIdAndUpdate(id, updateUserDto, {
       new: true,
     });
