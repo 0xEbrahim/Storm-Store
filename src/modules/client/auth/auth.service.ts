@@ -22,7 +22,7 @@ export class AuthService {
 
   async SignIn({ email, password }: SignInDTO) {
     let user = await this.UserModel.findOne({ email });
-    if (!user || !user.comparePasswords(password ?? '')) {
+    if (!user || !(await user.comparePasswords(password ?? ''))) {
       throw new BadRequestException('Wrong email or password');
     }
     const payload = {

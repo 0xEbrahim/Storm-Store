@@ -18,10 +18,11 @@ import { Role } from 'src/common/decorators/roles.decorator';
 import { Roles } from './Schema/user.schema';
 import type { Request } from 'express';
 import { ParseObjectId } from 'src/common/pipes/parseObjectId.pipe';
+import { RolesGuard } from 'src/common/guards/Role.guard';
 
 @Controller('admin/user')
+@UseGuards(AuthGuard, RolesGuard)
 @Role(Roles.ADMIN)
-@UseGuards(AuthGuard)
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
