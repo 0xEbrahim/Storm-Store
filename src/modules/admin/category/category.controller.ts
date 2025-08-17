@@ -24,21 +24,45 @@ import { ParseObjectId } from 'src/common/pipes/parseObjectId.pipe';
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
+  /**
+   * @desc Admin creates category
+   * @access Private [Admin]
+   * @method Post
+   * @route /api/v1/admin/category
+   */
   @Post()
   async create(@Body() createCategoryDto: AdminCreateCategoryDto) {
     return await this.categoryService.create(createCategoryDto);
   }
 
+  /**
+   * @desc Admin get all categories
+   * @access Private [Admin]
+   * @method Get
+   * @route /api/v1/admin/category
+   */
   @Get()
   async findAll(@Query() q: any) {
     return await this.categoryService.findAll(q);
   }
 
+  /**
+   * @desc Admin gets one category
+   * @access Private [Admin]
+   * @method Get
+   * @route /api/v1/admin/category/:id
+   */
   @Get(':id')
   async findOne(@Param('id', ParseObjectId) id: string) {
     return await this.categoryService.findOne(id);
   }
 
+  /**
+   * @desc Admin updates one category
+   * @access Private [Admin]
+   * @method Patch
+   * @route /api/v1/admin/category/:id
+   */
   @Patch(':id')
   async update(
     @Param('id', ParseObjectId) id: string,
@@ -47,6 +71,12 @@ export class CategoryController {
     return await this.categoryService.update(id, updateCategoryDto);
   }
 
+  /**
+   * @desc Admin deletes one category
+   * @access Private [Admin]
+   * @method Delete
+   * @route /api/v1/admin/category/:id
+   */
   @Delete(':id')
   async cremove(@Param('id', ParseObjectId) id: string) {
     return await this.categoryService.remove(id);

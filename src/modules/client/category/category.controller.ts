@@ -12,11 +12,23 @@ import { ParseObjectId } from 'src/common/pipes/parseObjectId.pipe';
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
+  /**
+   * @desc user gets all categories
+   * @access Public [Admin, User]
+   * @method Get
+   * @route /api/v1/category
+   */
   @Get()
   findAll(@Query() q: any) {
     return this.categoryService.findAll(q);
   }
 
+  /**
+   * @desc user get one category
+   * @access Public [Admin, User]
+   * @method Get
+   * @route /api/v1/category/:id
+   */
   @Get(':id')
   findOne(@Param('id', ParseObjectId) id: string) {
     return this.categoryService.findOne(id);
