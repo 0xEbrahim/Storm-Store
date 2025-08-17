@@ -1,3 +1,4 @@
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
   IsNotEmpty,
   IsOptional,
@@ -8,14 +9,17 @@ import {
 } from 'class-validator';
 
 export class AdminCreateCategoryDto {
+  @ApiProperty()
   @IsString()
   @IsNotEmpty()
   @MinLength(3)
   @MaxLength(30)
   name: string;
 
+
+  @ApiPropertyOptional()
   @IsUrl()
   @IsString()
   @IsOptional()
-  image: string;
+  image?: string;
 }

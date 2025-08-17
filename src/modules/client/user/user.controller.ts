@@ -11,16 +11,16 @@ import {
   HttpCode,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { ClientUpdateUserDto } from './dto/update-user.dto';
 import { AuthGuard } from 'src/common/guards/Auth.guard';
 import { Roles } from 'src/modules/admin/user/Schema/user.schema';
 import { Role } from 'src/common/decorators/roles.decorator';
-import type { Request } from 'express';
 import { User } from 'src/common/decorators/user.decorator';
 import { RolesGuard } from 'src/common/guards/Role.guard';
+import { ApiBearerAuth, ApiBody } from '@nestjs/swagger';
 
 @Controller('user')
+@ApiBearerAuth()
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -30,6 +30,7 @@ export class UserController {
    * @method Get
    * @route /api/v1/user/me
    */
+
   @Get('/me')
   @UseGuards(AuthGuard, RolesGuard)
   @Role(Roles.ADMIN, Roles.USER)
@@ -44,11 +45,15 @@ export class UserController {
    * @method Patch
    * @route /api/v1/user/me
    */
+  @ApiBody({ type: ClientUpdateUserDto })
   @Patch('me')
   @UseGuards(AuthGuard, RolesGuard)
   @Role(Roles.USER, Roles.ADMIN)
   @HttpCode(200)
-  async UpdateProfile(@Body() updateUserDTO: UpdateUserDto, @User() user: any) {
+  async UpdateProfile(
+    @Body() updateUserDTO: ClientUpdateUserDto,
+    @User() user: any,
+  ) {
     return await this.userService.updateUser(updateUserDTO, user.id);
   }
 

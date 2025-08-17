@@ -19,10 +19,13 @@ import { Roles } from './Schema/user.schema';
 import type { Request } from 'express';
 import { ParseObjectId } from 'src/common/pipes/parseObjectId.pipe';
 import { RolesGuard } from 'src/common/guards/Role.guard';
+import { ApiBearerAuth, ApiBody, ApiParam, ApiQuery } from '@nestjs/swagger';
+import { QueryDto } from 'src/common/dto/query.dto';
 
 @Controller('admin/user')
 @UseGuards(AuthGuard, RolesGuard)
 @Role(Roles.ADMIN)
+@ApiBearerAuth()
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -33,6 +36,7 @@ export class UserController {
    * @method Post
    * @route /api/v1/admin/user
    */
+  @ApiBody({ type: CreateUserDto })
   @Post()
   @HttpCode(201)
   create(@Body() createUserDto: CreateUserDto) {
@@ -45,6 +49,7 @@ export class UserController {
    * @method Get
    * @route /api/v1/admin/user
    */
+  @ApiQuery({ type: QueryDto })
   @Get()
   @HttpCode(200)
   findAll(@Req() req: Request) {
@@ -57,6 +62,7 @@ export class UserController {
    * @method Get
    * @route /api/v1/admin/user/:id
    */
+  @ApiParam({ name: 'id', type: '68a1e4e778f9ec5681c9f87f' })
   @Get(':id')
   @HttpCode(200)
   findOne(@Param('id', ParseObjectId) id: string) {
@@ -69,6 +75,8 @@ export class UserController {
    * @method Patch
    * @route /api/v1/admin/user/:id
    */
+  @ApiParam({ name: 'id', type: '68a1e4e778f9ec5681c9f87f' })
+  @ApiBody({ type: UpdateUserDto })
   @Patch(':id')
   @HttpCode(200)
   update(
@@ -84,6 +92,7 @@ export class UserController {
    * @method Delete
    * @route /api/v1/admin/user/:id
    */
+  @ApiParam({ name: 'id', type: '68a1e4e778f9ec5681c9f87f' })
   @Delete(':id')
   @HttpCode(200)
   remove(@Param('id', ParseObjectId) id: string) {
