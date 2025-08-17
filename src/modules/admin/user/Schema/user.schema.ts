@@ -1,9 +1,12 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import * as crypto from 'node:crypto';
 import * as bcrypt from 'bcrypt';
 import { HydratedDocument } from 'mongoose';
 
 export interface UserDocument extends HydratedDocument<User> {
   comparePasswords(password: string): Promise<boolean>;
+  createPasswordResetCode(): Promise<string>;
+  updatePassword(): Promise<void>;
 }
 
 export enum Roles {
@@ -33,7 +36,6 @@ export class User {
     type: String,
     required: true,
     minLength: [3, 'Password must be at least 3 characers'],
-    maxLength: [30, 'Password must be at most 30 characers'],
   })
   password: string;
 
@@ -46,27 +48,45 @@ export class User {
   role: string;
 
   @Prop({ type: String })
-  avatar: string;
+  avatar?: string;
 
   @Prop({ type: Number })
-  age: number;
+  age?: number;
 
   @Prop({ type: String })
-  phoneNumber: string;
+  phoneNumber?: string;
 
   @Prop({ type: String })
-  address: string;
+  address?: string;
 
   @Prop({ type: Boolean, default: true })
   active: boolean;
 
-  @Prop({ type: String })
-  verificationCode: string;
+  @Prop({ type: String, unique: true })
+  forgotPasswordCode?: string;
+
+  @Prop({ type: Date, required: false })
+  forgotPasswordCodeExpiresIn?: Date;
 
   @Prop({ type: String, enum: Gender })
-  gender: string;
+  gender?: string;
   async comparePasswords(candidatePassword: string): Promise<boolean> {
     return bcrypt.compare(candidatePassword, this.password);
+  }
+  async createPasswordResetCode(): Promise<string> {
+    const code = await crypto.randomBytes(32).toString('hex');
+    const encrypt = await crypto
+      .createHash('sha256')
+      .update(code)
+      .digest('hex');
+    this.forgotPasswordCode = encrypt;
+    this.forgotPasswordCodeExpiresIn = new Date(Date.now() + 10 * 60 * 1000);
+    return code;
+  }
+
+  async updatePassword(): Promise<void> {
+    this.forgotPasswordCode = undefined;
+    this.forgotPasswordCodeExpiresIn = undefined;
   }
 }
 
@@ -81,4 +101,17 @@ UserSchema.pre('save', async function (next) {
 
 UserSchema.methods.comparePasswords = async function (password: string) {
   return await bcrypt.compare(password, this.password);
+};
+
+UserSchema.methods.createPasswordResetCode = async function () {
+  const code = await crypto.randomBytes(32).toString('hex');
+  const encrypt = await crypto.createHash('sha256').update(code).digest('hex');
+  this.forgotPasswordCode = encrypt;
+  this.forgotPasswordCodeExpiresIn = Date.now() + 10 * 60 * 1000;
+  return code;
+};
+
+UserSchema.methods.updatePassword = async function () {
+  this.forgotPasswordCode = undefined;
+  this.forgotPasswordCodeExpiresIn = undefined;
 };

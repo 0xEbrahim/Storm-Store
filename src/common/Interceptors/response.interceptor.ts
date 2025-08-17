@@ -21,12 +21,13 @@ export class ResponseInterceptor implements NestInterceptor {
       map((data) => ({
         statusCode,
         status: 'Success',
+        message: data.message,
         page: data.page,
         size: data.size,
         data: data?.data,
         token: data?.token,
         timestamp: Date.now(),
-      }))
+      })),
     );
   }
 }
