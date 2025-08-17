@@ -30,23 +30,27 @@ export class UserService {
     if (userExist) {
       throw new BadRequestException('Email is already exists.');
     }
-    return await this.UserModel.create(createUserDto);
+    const user = await this.UserModel.create(createUserDto);
+    return { data: { user } };
   }
 
   async findAll(q: any) {
+    q.page = q.page ? q.page : 1;
+    q.limit = q.limit ? q.limit : 10;
+
     const query = new ApiFeatures(this.UserModel.find({}), q)
       .filter()
       .limitFields()
       .paginate()
       .sort();
     const users = await query.exec();
-    return { users, page: +q.page, size: users.length };
+    return { data: { users }, page: +q.page, size: users.length };
   }
 
   async findOne(id: string) {
     const user = await this.UserModel.findById(id);
     if (!user) throw new NotFoundException('User not found');
-    return user;
+    return { data: { user } };
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
@@ -56,7 +60,7 @@ export class UserService {
     user = await this.UserModel.findByIdAndUpdate(id, updateUserDto, {
       new: true,
     });
-    return user;
+    return { data: { user } };
   }
 
   async remove(id: string) {

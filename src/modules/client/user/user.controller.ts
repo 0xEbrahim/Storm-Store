@@ -8,6 +8,7 @@ import {
   Delete,
   UseGuards,
   Req,
+  HttpCode,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -31,6 +32,7 @@ export class UserController {
   @Get('/me')
   @UseGuards(AuthGuard)
   @Role(Roles.ADMIN, Roles.USER)
+  @HttpCode(200)
   async findProfile(@User() user: any) {
     return await this.userService.findProfile(user.id);
   }
@@ -44,13 +46,21 @@ export class UserController {
   @Patch('me')
   @UseGuards(AuthGuard)
   @Role(Roles.USER, Roles.ADMIN)
+  @HttpCode(200)
   async UpdateProfile(@Body() updateUserDTO: UpdateUserDto, @User() user: any) {
     return await this.userService.updateUser(updateUserDTO, user.id);
   }
 
+  /**
+   * @desc User deactivates profile
+   * @access Private [User]
+   * @method DELETE
+   * @route /api/v1/user/me
+   */
   @Delete('me')
   @UseGuards(AuthGuard)
   @Role(Roles.USER)
+  @HttpCode(200)
   async deactivateProfile(@User() user: any) {
     return await this.userService.deactivateProfile(user.id);
   }
