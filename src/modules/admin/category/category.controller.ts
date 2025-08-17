@@ -16,6 +16,7 @@ import { AuthGuard } from 'src/common/guards/Auth.guard';
 import { RolesGuard } from 'src/common/guards/Role.guard';
 import { Role } from 'src/common/decorators/roles.decorator';
 import { Roles } from '../user/Schema/user.schema';
+import { ParseObjectId } from 'src/common/pipes/parseObjectId.pipe';
 
 @Controller('admin/category')
 @UseGuards(AuthGuard, RolesGuard)
@@ -33,16 +34,21 @@ export class CategoryController {
     return await this.categoryService.findAll(q);
   }
 
+  @Get(':id')
+  async findOne(@Param('id', ParseObjectId) id: string) {
+    return await this.categoryService.findOne(id);
+  }
+
   @Patch(':id')
   async update(
-    @Param('id') id: string,
+    @Param('id', ParseObjectId) id: string,
     @Body() updateCategoryDto: UpdateCategoryDto,
   ) {
     return await this.categoryService.update(id, updateCategoryDto);
   }
 
   @Delete(':id')
-  async cremove(@Param('id') id: string) {
+  async cremove(@Param('id', ParseObjectId) id: string) {
     return await this.categoryService.remove(id);
   }
 }

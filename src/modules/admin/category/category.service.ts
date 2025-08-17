@@ -29,6 +29,12 @@ export class CategoryService {
     return { data: { categories }, page: +q.page, size: categories.length };
   }
 
+  async findOne(id: string) {
+    const category = await this.CategoryModel.findById(id);
+    if (!category) throw new NotFoundException('Category not found');
+    return { data: { category } };
+  }
+
   async update(id: string, updateCategoryDto: UpdateCategoryDto) {
     let category = await this.CategoryModel.findById(id);
     if (!category) throw new NotFoundException('Category not found');
