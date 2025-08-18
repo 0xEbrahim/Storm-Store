@@ -5,7 +5,7 @@ import { RolesGuard } from 'src/common/guards/Role.guard';
 import { Role } from 'src/common/decorators/roles.decorator';
 import { Roles } from 'src/modules/admin/user/Schema/user.schema';
 import { ParseObjectId } from 'src/common/pipes/parseObjectId.pipe';
-import { ApiBearerAuth, ApiParam, ApiQuery } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { QueryDto } from 'src/common/dto/query.dto';
 
 @Controller('category')

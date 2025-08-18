@@ -9,6 +9,10 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { EjsAdapter } from '@nestjs-modules/mailer/dist/adapters/ejs.adapter';
 import { AdminCategoryModule } from './modules/admin/category/category.module';
 import { ClientCategoryModule } from './modules/client/category/category.module';
+import { AdminSubCategoryModule } from './modules/admin/sub-category/sub-category.module';
+import { ClientSubCategoryModule } from './modules/client/sub-category/sub-category.module';
+import { AdminBrandModule } from './modules/admin/brand/brand.module';
+import { ClientBrandModule } from './modules/client/brand/brand.module';
 import path from 'node:path';
 
 @Module({
@@ -55,6 +59,10 @@ import path from 'node:path';
     AuthModule,
     AdminCategoryModule,
     ClientCategoryModule,
+    AdminSubCategoryModule,
+    ClientSubCategoryModule,
+    AdminBrandModule,
+    ClientBrandModule,
   ],
 })
 export class AppModule {}

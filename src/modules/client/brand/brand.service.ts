@@ -2,18 +2,16 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import ApiFeatures from 'src/common/utils/APIFeatures';
-import { Category } from 'src/modules/admin/category/schema/category.schema';
+import { Brand } from 'src/modules/admin/brand/schema/brand.schema';
 
 @Injectable()
-export class CategoryService {
-  constructor(
-    @InjectModel(Category.name) private CategoryModel: Model<Category>,
-  ) {}
+export class ClientBrandService {
+  constructor(@InjectModel(Brand.name) private BrandModel: Model<Brand>) {}
 
   async findAll(q: any) {
     q.page = q.page ? q.page : 1;
     q.limit = q.limit ? q.limit : 10;
-    const query = new ApiFeatures(this.CategoryModel.find({}), q)
+    const query = new ApiFeatures(this.BrandModel.find({}), q)
       .filter()
       .limitFields()
       .sort()
@@ -23,8 +21,8 @@ export class CategoryService {
   }
 
   async findOne(id: string) {
-    const category = await this.CategoryModel.findById(id);
-    if (!category) throw new NotFoundException('Category not found');
-    return { data: { category } };
+    const brand = await this.BrandModel.findById(id);
+    if (!brand) throw new NotFoundException('Brand not found');
+    return { data: { brand } };
   }
 }

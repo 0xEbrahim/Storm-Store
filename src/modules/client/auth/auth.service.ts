@@ -16,7 +16,6 @@ import { ConfigService } from '@nestjs/config';
 import path from 'node:path';
 import { ResetPasswordDTO } from './dto/reset-password.dto';
 import { ChangePasswordDTO } from './dto/change-password.dto';
-import { NotFoundError } from 'rxjs';
 
 @Injectable()
 export class AuthService {
