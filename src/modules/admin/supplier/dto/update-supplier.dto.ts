@@ -1,4 +1,4 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiPropertyOptional } from '@nestjs/swagger';
 import {
   IsNotEmpty,
   IsOptional,
@@ -8,18 +8,19 @@ import {
   MinLength,
 } from 'class-validator';
 
-export class UpdateCategoryDto {
-  @ApiProperty()
+export class AdminUpdateSupplierDto {
+  @ApiPropertyOptional()
   @IsString()
   @IsNotEmpty()
   @MinLength(3)
-  @MaxLength(30)
+  @MaxLength(100)
   @IsOptional()
   name?: string;
 
   @ApiPropertyOptional()
-  @IsUrl()
   @IsString()
+  @IsUrl()
+  @IsNotEmpty()
   @IsOptional()
-  image?: string;
+  website?: string;
 }

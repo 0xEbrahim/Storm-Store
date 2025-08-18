@@ -13,5 +13,5 @@ export class AdminCreateBrandDto {
   @IsString()
   @IsUrl()
   @IsOptional()
-  image: string;
+  image?: string;
 }

@@ -1,26 +1,30 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import {
-  IsMongoId,
+  IsDateString,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
   IsString,
   MaxLength,
-  MinLength,
 } from 'class-validator';
 
-export class AdminUpdateSubCategoryDto {
+export class AdminUpdateCouponDto {
   @ApiPropertyOptional()
   @IsString()
   @IsNotEmpty()
-  @MinLength(3)
-  @MaxLength(30)
+  @MaxLength(12)
   @IsOptional()
-  name?: string;
+  coupon?: string;
 
   @ApiPropertyOptional()
-  @IsString()
+  @IsDateString()
   @IsNotEmpty()
-  @IsMongoId()
   @IsOptional()
-  categoryId?: string;
+  expireIn?: Date;
+
+  @ApiPropertyOptional()
+  @IsNumber()
+  @IsNotEmpty()
+  @IsOptional()
+  discount?: number;
 }

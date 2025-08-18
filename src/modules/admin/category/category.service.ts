@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { AdminCreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { InjectModel } from '@nestjs/mongoose';
@@ -12,7 +16,13 @@ export class CategoryService {
     @InjectModel(Category.name) private CategoryModel: Model<Category>,
   ) {}
 
+  private async _checkValidName(name: string) {
+    const category = await this.CategoryModel.findOne({ name: name });
+    if (category) throw new BadRequestException('Category already exists');
+  }
+
   async create(createCategoryDto: AdminCreateCategoryDto) {
+    await this._checkValidName(createCategoryDto.name);
     const category = await this.CategoryModel.create(createCategoryDto);
     return { data: { category } };
   }
@@ -38,6 +48,8 @@ export class CategoryService {
   async update(id: string, updateCategoryDto: UpdateCategoryDto) {
     let category = await this.CategoryModel.findById(id);
     if (!category) throw new NotFoundException('Category not found');
+    if (updateCategoryDto?.name)
+      await this._checkValidName(updateCategoryDto.name);
     category = await this.CategoryModel.findByIdAndUpdate(
       id,
       updateCategoryDto,

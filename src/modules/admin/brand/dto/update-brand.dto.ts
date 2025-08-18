@@ -8,11 +8,11 @@ export class AdminUpdateBrandDto  {
       @MinLength(3)
       @MaxLength(100)
       @IsOptional()
-      name: string;
+      name?: string;
     
       @ApiPropertyOptional()
       @IsString()
       @IsUrl()
       @IsOptional()
-      image: string;
+      image?: string;
 }
