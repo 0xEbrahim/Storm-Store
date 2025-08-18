@@ -21,8 +21,8 @@ export class ClientBrandService {
   }
 
   async findOne(id: string) {
-    const category = await this.BrandModel.findById(id);
-    if (!category) throw new NotFoundException('Category not found');
-    return { data: { category } };
+    const brand = await this.BrandModel.findById(id);
+    if (!brand) throw new NotFoundException('Brand not found');
+    return { data: { brand } };
   }
 }

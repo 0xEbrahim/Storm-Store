@@ -28,8 +28,8 @@ export class AdminSubCategoryService {
       );
   }
   private async _CheckValidCategoryId(categoryId: string) {
-    const category = await this.CategoryModel.findById(categoryId);
-    if (!category) throw new NotFoundException('Category not found');
+    const subCategory = await this.CategoryModel.findById(categoryId);
+    if (!subCategory) throw new NotFoundException('Sub category not found');
   }
 
   async create({ categoryId, name }: AdminCreateSubCategoryDto) {
@@ -61,13 +61,13 @@ export class AdminSubCategoryService {
   async findOne(id: string) {
     const subCategory =
       await this.SubCategoryModel.findById(id).populate('categoryId');
-    if (!subCategory) throw new NotFoundException('Category not found');
+    if (!subCategory) throw new NotFoundException('Sub category not found');
     return { data: { subCategory } };
   }
 
   async update(id: string, updateCategoryDto: AdminUpdateSubCategoryDto) {
     let subCategory = await this.SubCategoryModel.findById(id);
-    if (!subCategory) throw new NotFoundException('Category not found');
+    if (!subCategory) throw new NotFoundException('Sub category not found');
     if (updateCategoryDto.categoryId)
       await this._CheckValidCategoryId(updateCategoryDto.categoryId);
     if (updateCategoryDto.name)
@@ -82,7 +82,7 @@ export class AdminSubCategoryService {
 
   async remove(id: string) {
     let subCategory = await this.SubCategoryModel.findById(id);
-    if (!subCategory) throw new NotFoundException('Category not found');
+    if (!subCategory) throw new NotFoundException('Sub category not found');
     await this.SubCategoryModel.findByIdAndDelete(id);
   }
 }

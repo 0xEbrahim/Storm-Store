@@ -18,13 +18,17 @@ export class AdminSubCategoryService {
       .limitFields()
       .sort()
       .paginate();
-    const categories = await query.exec();
-    return { data: { categories }, page: +q.page, size: categories.length };
+    const subCategories = await query.exec();
+    return {
+      data: { subCategories },
+      page: +q.page,
+      size: subCategories.length,
+    };
   }
 
   async findOne(id: string) {
-    const category = await this.SubCategoryModel.findById(id);
-    if (!category) throw new NotFoundException('Category not found');
-    return { data: { category } };
+    const subCategory = await this.SubCategoryModel.findById(id);
+    if (!subCategory) throw new NotFoundException('Sub category not found');
+    return { data: { subCategory } };
   }
 }

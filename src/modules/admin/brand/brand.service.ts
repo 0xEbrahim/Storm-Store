@@ -10,9 +10,9 @@ import ApiFeatures from 'src/common/utils/APIFeatures';
 export class AdminBrandService {
   constructor(@InjectModel(Brand.name) private BrandModel: Model<Brand>) {}
 
-  async create(createCategoryDto: AdminCreateBrandDto) {
-    const category = await this.BrandModel.create(createCategoryDto);
-    return { data: { category } };
+  async create(createbrandDto: AdminCreateBrandDto) {
+    const brand = await this.BrandModel.create(createbrandDto);
+    return { data: { brand } };
   }
 
   async findAll(q: any) {
@@ -28,23 +28,23 @@ export class AdminBrandService {
   }
 
   async findOne(id: string) {
-    const category = await this.BrandModel.findById(id);
-    if (!category) throw new NotFoundException('Category not found');
-    return { data: { category } };
+    const brand = await this.BrandModel.findById(id);
+    if (!brand) throw new NotFoundException('Brand not found');
+    return { data: { brand } };
   }
 
   async update(id: string, updateBrandDto: AdminUpdateBrandDto) {
-    let category = await this.BrandModel.findById(id);
-    if (!category) throw new NotFoundException('Category not found');
-    category = await this.BrandModel.findByIdAndUpdate(id, updateBrandDto, {
+    let brand = await this.BrandModel.findById(id);
+    if (!brand) throw new NotFoundException('Brand not found');
+    brand = await this.BrandModel.findByIdAndUpdate(id, updateBrandDto, {
       new: true,
     });
-    return { data: { category } };
+    return { data: { brand } };
   }
 
   async remove(id: string) {
-    let category = await this.BrandModel.findById(id);
-    if (!category) throw new NotFoundException('Category not found');
+    let brand = await this.BrandModel.findById(id);
+    if (!brand) throw new NotFoundException('Brand not found');
     await this.BrandModel.findByIdAndDelete(id);
   }
 }
