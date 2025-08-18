@@ -14,7 +14,8 @@ export class UpdateCategoryDto {
   @IsNotEmpty()
   @MinLength(3)
   @MaxLength(30)
-  name: string;
+  @IsOptional()
+  name?: string;
 
   @ApiPropertyOptional()
   @IsUrl()

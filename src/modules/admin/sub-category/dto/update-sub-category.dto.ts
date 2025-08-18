@@ -15,12 +15,12 @@ export class AdminUpdateSubCategoryDto {
   @MinLength(3)
   @MaxLength(30)
   @IsOptional()
-  name: string;
+  name?: string;
 
   @ApiPropertyOptional()
   @IsString()
   @IsNotEmpty()
   @IsMongoId()
   @IsOptional()
-  categoryId: string;
+  categoryId?: string;
 }

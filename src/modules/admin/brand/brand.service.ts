@@ -45,7 +45,7 @@ export class AdminBrandService {
   async update(id: string, updateBrandDto: AdminUpdateBrandDto) {
     let brand = await this.BrandModel.findById(id);
     if (!brand) throw new NotFoundException('Brand not found');
-    if (updateBrandDto.name) await this._CheckValidName(updateBrandDto.name);
+    if (updateBrandDto?.name) await this._CheckValidName(updateBrandDto.name);
     brand = await this.BrandModel.findByIdAndUpdate(id, updateBrandDto, {
       new: true,
     });

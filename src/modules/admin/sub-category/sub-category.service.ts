@@ -68,9 +68,9 @@ export class AdminSubCategoryService {
   async update(id: string, updateCategoryDto: AdminUpdateSubCategoryDto) {
     let subCategory = await this.SubCategoryModel.findById(id);
     if (!subCategory) throw new NotFoundException('Sub category not found');
-    if (updateCategoryDto.categoryId)
+    if (updateCategoryDto?.categoryId)
       await this._CheckValidCategoryId(updateCategoryDto.categoryId);
-    if (updateCategoryDto.name)
+    if (updateCategoryDto?.name)
       await this._CheckValidSubCategoryName(updateCategoryDto.name);
     subCategory = await this.SubCategoryModel.findByIdAndUpdate(
       id,
