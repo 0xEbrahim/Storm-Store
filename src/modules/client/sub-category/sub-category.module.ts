@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { SubCategoryService } from './sub-category.service';
-import { SubCategoryController } from './sub-category.controller';
+import { AdminSubCategoryService } from './sub-category.service';
+import { ClientSubCategoryController } from './sub-category.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
 import {
@@ -18,7 +18,7 @@ import { JWTService } from 'src/modules/jwt/jwt.service';
       { name: User.name, schema: UserSchema },
     ]),
   ],
-  controllers: [SubCategoryController],
-  providers: [SubCategoryService, JWTService],
+  controllers: [ClientSubCategoryController],
+  providers: [AdminSubCategoryService, JWTService],
 })
 export class SubCategoryModule {}

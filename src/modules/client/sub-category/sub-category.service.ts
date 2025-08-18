@@ -5,9 +5,10 @@ import ApiFeatures from 'src/common/utils/APIFeatures';
 import { SubCategory } from 'src/modules/admin/sub-category/schema/sub-category.schema';
 
 @Injectable()
-export class SubCategoryService {
-
-  constructor(@InjectModel(SubCategory.name) private SubCategoryModel : Model<SubCategory>){}
+export class AdminSubCategoryService {
+  constructor(
+    @InjectModel(SubCategory.name) private SubCategoryModel: Model<SubCategory>,
+  ) {}
 
   async findAll(q: any) {
     q.page = q.page ? q.page : 1;
