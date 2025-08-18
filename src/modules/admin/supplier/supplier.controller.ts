@@ -30,7 +30,7 @@ import { ParseObjectId } from 'src/common/pipes/parseObjectId.pipe';
 @UseGuards(AuthGuard, RolesGuard)
 @Role(Roles.ADMIN)
 @ApiBearerAuth()
-@ApiTags('Supplie')
+@ApiTags('Supplier')
 export class AdminSupplierController {
   constructor(private readonly supplierService: AdminSupplierService) {}
 
