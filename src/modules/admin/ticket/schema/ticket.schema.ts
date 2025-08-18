@@ -1,5 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Types } from 'mongoose';
+import { User } from '../../user/Schema/user.schema';
+import { Category } from '../../category/schema/category.schema';
 
 export interface TicketDocument extends HydratedDocument<Ticket> {}
 
@@ -14,10 +16,10 @@ export class Ticket {
   @Prop({ type: Number, default: 1 })
   quantity: number;
 
-  @Prop({ type: Types.ObjectId, required: true })
+  @Prop({ type: Types.ObjectId, required: true, ref: User.name })
   user: string;
 
-  @Prop({ type: Types.ObjectId, required: true })
+  @Prop({ type: Types.ObjectId, required: true, ref: Category.name })
   category: string;
 }
 
