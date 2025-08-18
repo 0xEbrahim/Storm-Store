@@ -1,26 +1,29 @@
-import { Injectable } from '@nestjs/common';
-import { CreateSubCategoryDto } from './dto/create-sub-category.dto';
-import { UpdateSubCategoryDto } from './dto/update-sub-category.dto';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import ApiFeatures from 'src/common/utils/APIFeatures';
+import { SubCategory } from 'src/modules/admin/sub-category/schema/sub-category.schema';
 
 @Injectable()
 export class SubCategoryService {
-  create(createSubCategoryDto: CreateSubCategoryDto) {
-    return 'This action adds a new subCategory';
+
+  constructor(@InjectModel(SubCategory.name) private SubCategoryModel : Model<SubCategory>){}
+
+  async findAll(q: any) {
+    q.page = q.page ? q.page : 1;
+    q.limit = q.limit ? q.limit : 10;
+    const query = new ApiFeatures(this.SubCategoryModel.find({}), q)
+      .filter()
+      .limitFields()
+      .sort()
+      .paginate();
+    const categories = await query.exec();
+    return { data: { categories }, page: +q.page, size: categories.length };
   }
 
-  findAll() {
-    return `This action returns all subCategory`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} subCategory`;
-  }
-
-  update(id: number, updateSubCategoryDto: UpdateSubCategoryDto) {
-    return `This action updates a #${id} subCategory`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} subCategory`;
+  async findOne(id: string) {
+    const category = await this.SubCategoryModel.findById(id);
+    if (!category) throw new NotFoundException('Category not found');
+    return { data: { category } };
   }
 }
