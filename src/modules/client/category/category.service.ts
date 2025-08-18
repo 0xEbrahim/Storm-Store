@@ -1,7 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { NotFoundError } from 'rxjs';
 import ApiFeatures from 'src/common/utils/APIFeatures';
 import { Category } from 'src/modules/admin/category/schema/category.schema';
 

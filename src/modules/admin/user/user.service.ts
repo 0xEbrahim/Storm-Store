@@ -13,10 +13,7 @@ import ApiFeatures from 'src/common/utils/APIFeatures';
 
 @Injectable()
 export class UserService {
-  constructor(
-    @InjectModel(User.name) private UserModel: Model<User>,
-    private jwt: JWTService,
-  ) {}
+  constructor(@InjectModel(User.name) private UserModel: Model<User>) {}
 
   async create(createUserDto: CreateUserDto) {
     // return await this.jwt.generateAccessToken({
