@@ -24,6 +24,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { QueryDto } from 'src/common/dto/query.dto';
+import { ParseObjectId } from 'src/common/pipes/parseObjectId.pipe';
 
 @Controller('admin/coupon')
 @UseGuards(AuthGuard, RolesGuard)
@@ -46,7 +47,7 @@ export class AdminCouponController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', ParseObjectId) id: string) {
     return this.couponService.findOne(id);
   }
 
@@ -54,7 +55,7 @@ export class AdminCouponController {
   @ApiBody({ type: AdminUpdateCouponDto })
   @ApiParam({ name: 'id', type: '68a1a451b77f4a0abeeb3ce5' })
   update(
-    @Param('id') id: string,
+    @Param('id', ParseObjectId) id: string,
     @Body() updateCouponDto: AdminUpdateCouponDto,
   ) {
     return this.couponService.update(id, updateCouponDto);
@@ -62,7 +63,7 @@ export class AdminCouponController {
 
   @Delete(':id')
   @ApiParam({ name: 'id', type: '68a1a451b77f4a0abeeb3ce5' })
-  remove(@Param('id') id: string) {
+  remove(@Param('id', ParseObjectId) id: string) {
     return this.couponService.remove(id);
   }
 }
