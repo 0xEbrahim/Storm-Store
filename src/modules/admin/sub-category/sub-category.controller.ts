@@ -12,7 +12,13 @@ import {
 import { AdminSubCategoryService } from './sub-category.service';
 import { AdminCreateSubCategoryDto } from './dto/create-sub-category.dto';
 import { AdminUpdateSubCategoryDto } from './dto/update-sub-category.dto';
-import { ApiBearerAuth, ApiBody, ApiParam, ApiQuery } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiParam,
+  ApiQuery,
+  ApiTags,
+} from '@nestjs/swagger';
 import { ParseObjectId } from 'src/common/pipes/parseObjectId.pipe';
 import { QueryDto } from 'src/common/dto/query.dto';
 import { AuthGuard } from 'src/common/guards/Auth.guard';
@@ -24,6 +30,7 @@ import { Role } from 'src/common/decorators/roles.decorator';
 @UseGuards(AuthGuard, RolesGuard)
 @Role(Roles.ADMIN)
 @ApiBearerAuth()
+@ApiTags('Sub category')
 export class AdminSubCategoryController {
   constructor(private readonly subCategoryService: AdminSubCategoryService) {}
 

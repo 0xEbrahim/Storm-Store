@@ -21,4 +21,4 @@ import { JWTService } from 'src/modules/jwt/jwt.service';
   controllers: [ClientSubCategoryController],
   providers: [AdminSubCategoryService, JWTService],
 })
-export class SubCategoryModule {}
+export class ClientSubCategoryModule {}
