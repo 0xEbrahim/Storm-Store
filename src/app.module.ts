@@ -16,6 +16,7 @@ import { ClientBrandModule } from './modules/client/brand/brand.module';
 import { AdminCouponModule } from './modules/admin/coupon/coupon.module';
 import { AdminSupplierModule } from './modules/admin/supplier/supplier.module';
 import { ClientSupplierModule } from './modules/client/supplier/supplier.module';
+import { AdminTicketModule } from './modules/admin/ticket/ticket.module';
 import path from 'node:path';
 
 @Module({
@@ -69,6 +70,7 @@ import path from 'node:path';
     AdminCouponModule,
     AdminSupplierModule,
     ClientSupplierModule,
+    AdminTicketModule,
   ],
 })
 export class AppModule {}
