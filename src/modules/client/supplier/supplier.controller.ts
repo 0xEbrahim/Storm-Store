@@ -16,12 +16,24 @@ import { ParseObjectId } from 'src/common/pipes/parseObjectId.pipe';
 export class ClientSupplierController {
   constructor(private readonly supplierService: ClientSupplierService) {}
 
+  /**
+   * @desc user gets all suppliers
+   * @access Public [Admin, User]
+   * @method Get
+   * @route /api/v1/supplier
+   */
   @ApiQuery({ type: QueryDto })
   @Get()
   async findAll(@Query() q: any) {
     return await this.supplierService.findAll(q);
   }
 
+  /**
+   * @desc user gets one supplier
+   * @access Public [Admin, User]
+   * @method Get
+   * @route /api/v1/supplier/:id
+   */
   @ApiParam({ name: 'id', type: '68a1a451b77f4a0abeeb3ce5' })
   @Get(':id')
   async findOne(@Param('id', ParseObjectId) id: string) {
