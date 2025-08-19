@@ -15,12 +15,24 @@ import { QueryDto } from 'src/common/dto/query.dto';
 export class AdminCartController {
   constructor(private readonly cartService: AdminCartService) {}
 
+  /**
+   * @desc Admin ges one cart
+   * @access Private [Admin]
+   * @method Get
+   * @route /api/v1/admin/cart/:id
+   */
   @ApiParam({ name: 'id', type: '68a492862c0202e173deb9fc' })
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return await this.cartService.findOne(id);
   }
 
+  /**
+   * @desc Admin gets all carts
+   * @access Private [Admin]
+   * @method Get
+   * @route /api/v1/admin/carts
+   */
   @ApiQuery({ type: QueryDto })
   @Get()
   async findAll(@Query() q: any) {

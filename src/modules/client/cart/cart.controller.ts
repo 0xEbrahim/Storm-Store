@@ -16,7 +16,8 @@ import { AuthGuard } from 'src/common/guards/Auth.guard';
 import { RolesGuard } from 'src/common/guards/Role.guard';
 import { Role } from 'src/common/decorators/roles.decorator';
 import { Roles } from 'src/modules/admin/user/Schema/user.schema';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiParam, ApiTags } from '@nestjs/swagger';
+import { RemoveFromCartDto } from './dto/delete-product-from-cart.dto';
 
 @Controller('cart')
 @UseGuards(AuthGuard, RolesGuard)
@@ -32,6 +33,7 @@ export class ClientCartController {
    * @method Post
    * @route /api/v1/cart
    */
+  @ApiBody({ type: ClientCreateCartDto })
   @Post()
   addToCart(@Body() createCartDto: ClientCreateCartDto, @User() user: any) {
     return this.cartService.create(createCartDto, user.id);
@@ -54,6 +56,7 @@ export class ClientCartController {
    * @method Patch
    * @route /api/v1/cart
    */
+  @ApiBody({ type: ClientUpdateCartDto })
   @Patch()
   update(@User() user: any, @Body() updateCartDto: ClientUpdateCartDto) {
     return this.cartService.update(user.id, updateCartDto);
@@ -65,6 +68,7 @@ export class ClientCartController {
    * @method Delete
    * @route /api/v1/cart
    */
+  @ApiBody({ type: RemoveFromCartDto })
   @Delete()
   remove(@User() user: any, @Body('productId') pId: string) {
     return this.cartService.remove(user.id, pId);
