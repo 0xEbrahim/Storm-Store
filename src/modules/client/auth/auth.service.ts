@@ -16,11 +16,13 @@ import { ConfigService } from '@nestjs/config';
 import path from 'node:path';
 import { ResetPasswordDTO } from './dto/reset-password.dto';
 import { ChangePasswordDTO } from './dto/change-password.dto';
+import { Cart } from 'src/modules/admin/cart/schema/cart.schema';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectModel(User.name) private UserModel: Model<User>,
+    @InjectModel(Cart.name) private CartModel: Model<Cart>,
     private jwt: JWTService,
     private emailService: EmailService,
     private config: ConfigService,
@@ -30,6 +32,7 @@ export class AuthService {
     let user = await this.UserModel.findOne({ email: email });
     if (user) throw new BadRequestException('Email already exists');
     user = await this.UserModel.create({ name, email, password });
+    await this.CartModel.create({ user: user._id });
     return { data: { user } };
   }
 
