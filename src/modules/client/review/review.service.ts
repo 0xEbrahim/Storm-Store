@@ -1,14 +1,18 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { AdminCreateReviewDto } from './dto/create-review.dto';
-import { AdminUpdateReviewDto } from './dto/update-review.dto';
-import { InjectModel } from '@nestjs/mongoose';
-import { Review } from './schema/review.schema';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
+import { ClientCreateReviewDto } from './dto/create-review.dto';
+import { ClientUpdateReviewDto } from './dto/update-review.dto';
+import { Product } from 'src/modules/admin/product/schema/product.schema';
+import { Review } from 'src/modules/admin/review/schema/review.schema';
 import { Model } from 'mongoose';
-import { Product } from '../product/schema/product.schema';
+import { InjectModel } from '@nestjs/mongoose';
 import ApiFeatures from 'src/common/utils/APIFeatures';
 
 @Injectable()
-export class AdminReviewService {
+export class ClientReviewService {
   constructor(
     @InjectModel(Review.name) private ReviewModel: Model<Review>,
     @InjectModel(Product.name) private ProductModel: Model<Product>,
@@ -19,7 +23,7 @@ export class AdminReviewService {
     if (!product) throw new NotFoundException('Product not found');
   }
 
-  async create(createReviewDto: AdminCreateReviewDto, userId: string) {
+  async create(createReviewDto: ClientCreateReviewDto, userId: string) {
     await this._CheckValidProduct(createReviewDto.product);
     const review = await this.ReviewModel.create({
       ...createReviewDto,
@@ -28,10 +32,10 @@ export class AdminReviewService {
     return { data: { review } };
   }
 
-  async findAll(q: any) {
+  async findAll(q: any, userId: string) {
     q.page = q.page ? q.page : 1;
     q.limit = q.limit ? q.limit : 10;
-    const query = new ApiFeatures(this.ReviewModel.find({}), q)
+    const query = new ApiFeatures(this.ReviewModel.find({ user: userId }), q)
       .filter()
       .limitFields()
       .sort()
@@ -41,25 +45,32 @@ export class AdminReviewService {
   }
 
   async findOne(id: string) {
-    const review = await this.ReviewModel.findById(id).populate('user');
-    if (!review) throw new NotFoundException('Review not found');
-    return { data: { review } };
-  }
-
-  async update(id: string, updateReviewDto: AdminUpdateReviewDto) {
-    if (updateReviewDto?.product)
-      await this._CheckValidProduct(updateReviewDto?.product);
-    let review = await this.ReviewModel.findById(id);
-    if (!review) throw new NotFoundException('Review not found');
-    review = await this.ReviewModel.findByIdAndUpdate(id, updateReviewDto, {
-      new: true,
-    }).populate('user');
-    return { data: { review } };
-  }
-
-  async remove(id: string) {
     const review = await this.ReviewModel.findById(id);
     if (!review) throw new NotFoundException('Review not found');
+    await review.populate('user');
+    return { data: { review } };
+  }
+
+  async update(
+    id: string,
+    updateReviewDto: ClientUpdateReviewDto,
+    userId: string,
+  ) {
+    let review = await this.ReviewModel.findOne({ _id: id, user: userId });
+    if (!review)
+      throw new UnauthorizedException('You are not authorize to do this');
+    if (updateReviewDto?.product)
+      await this._CheckValidProduct(updateReviewDto?.product);
+    review = await this.ReviewModel.findByIdAndUpdate(id, updateReviewDto, {
+      new: true,
+    });
+    return { data: { review } };
+  }
+
+  async remove(id: string, userId: string) {
+    const review = await this.ReviewModel.findOne({ _id: id, user: userId });
+    if (!review)
+      throw new UnauthorizedException('You are not authorize to do this');
     await this.ReviewModel.findByIdAndDelete(id);
   }
 }

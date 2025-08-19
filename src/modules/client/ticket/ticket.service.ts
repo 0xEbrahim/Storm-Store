@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { ClientCreateTicketDto } from './dto/create-ticket.dto';
 import { ClientUpdateTicketDto } from './dto/update-ticket.dto';
 import { InjectModel } from '@nestjs/mongoose';
@@ -45,7 +49,7 @@ export class ClientTicketService {
   ) {
     let ticket = await this.TicketModel.findById(id);
     if (!ticket || ticket.user.toString() !== userId.toString())
-      throw new NotFoundException('ticket not found');
+      throw new UnauthorizedException('You are not authorize to do this');
     ticket = await this.TicketModel.findByIdAndUpdate(id, updateTicketDto, {
       new: true,
     });
@@ -55,7 +59,7 @@ export class ClientTicketService {
   async remove(id: string, userId: string) {
     const ticket = await this.TicketModel.findById(id);
     if (!ticket || ticket.user.toString() !== userId.toString())
-      throw new NotFoundException('ticket not found');
+      throw new UnauthorizedException('You are not authorize to do this');
     await this.TicketModel.findByIdAndDelete(id);
   }
 }
