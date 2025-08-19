@@ -26,21 +26,45 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 export class ClientCartController {
   constructor(private readonly cartService: ClientCartService) {}
 
+  /**
+   * @desc user add to his cart
+   * @access Public [Admin, User]
+   * @method Post
+   * @route /api/v1/cart
+   */
   @Post()
   addToCart(@Body() createCartDto: ClientCreateCartDto, @User() user: any) {
     return this.cartService.create(createCartDto, user.id);
   }
 
+  /**
+   * @desc user gets his cart
+   * @access Public [Admin, User]
+   * @method Get
+   * @route /api/v1/cart
+   */
   @Get()
   findOne(@User() user: any) {
     return this.cartService.findOne(user.id);
   }
 
+  /**
+   * @desc user updates his cart
+   * @access Public [Admin, User]
+   * @method Patch
+   * @route /api/v1/cart
+   */
   @Patch()
   update(@User() user: any, @Body() updateCartDto: ClientUpdateCartDto) {
     return this.cartService.update(user.id, updateCartDto);
   }
 
+  /**
+   * @desc user remove product from his cart
+   * @access Public [Admin, User]
+   * @method Delete
+   * @route /api/v1/cart
+   */
   @Delete()
   remove(@User() user: any, @Body('productId') pId: string) {
     return this.cartService.remove(user.id, pId);
