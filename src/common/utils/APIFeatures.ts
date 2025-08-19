@@ -12,15 +12,19 @@ class ApiFeatures<T> {
   filter(): this {
     const queryObj = { ...this.queryString };
     const excFields = ['page', 'sort', 'limit', 'fields'];
-    excFields.forEach((field) => {
-      delete queryObj[field];
+    excFields.forEach((field) => delete queryObj[field]);
+    Object.keys(queryObj).forEach((key) => {
+      const match = key.match(/^(\w+)\[(gte|gt|lte|lt)\]$/);
+      if (match) {
+        const [, field, operator] = match;
+        queryObj[field] = { [`$${operator}`]: Number(queryObj[key]) };
+        delete queryObj[key];
+      } else if (!isNaN(queryObj[key])) {
+        queryObj[key] = Number(queryObj[key]);
+      }
     });
 
-    let queryStr = JSON.stringify(queryObj);
-
-    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
-
-    this.query = this.query.find(JSON.parse(queryStr));
+    this.query = this.query.find(queryObj);
 
     return this;
   }
