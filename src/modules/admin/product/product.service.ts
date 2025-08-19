@@ -30,8 +30,14 @@ export class AdminProductService {
     const category = await this.CategoryModel.findById(categoryId);
     if (!category) throw new NotFoundException('Category not found');
   }
-  private async _CheckValidSubCategory(subCategoryId: string) {
-    const subCategory = await this.SubCategoryModel.findById(subCategoryId);
+  private async _CheckValidSubCategory(
+    subCategoryId: string,
+    category: string,
+  ) {
+    const subCategory = await this.SubCategoryModel.findOne({
+      _id: subCategoryId,
+      categoryId: category,
+    });
     if (!subCategory) throw new NotFoundException('Sub category not found');
   }
   private async _CheckValidBrand(brandId: string) {
@@ -42,7 +48,10 @@ export class AdminProductService {
     await this._CheckValidTitle(createProductDto.title);
     await this._CheckValidCategory(createProductDto.category);
     if (createProductDto?.subCategory)
-      await this._CheckValidSubCategory(createProductDto?.subCategory);
+      await this._CheckValidSubCategory(
+        createProductDto?.subCategory,
+        createProductDto.category,
+      );
     if (createProductDto?.brand)
       await this._CheckValidBrand(createProductDto?.brand);
     if (
@@ -83,8 +92,11 @@ export class AdminProductService {
       await this._CheckValidTitle(updateProductDto?.title);
     if (updateProductDto?.category)
       await this._CheckValidCategory(updateProductDto?.category);
-    if (updateProductDto?.subCategory)
-      await this._CheckValidSubCategory(updateProductDto?.subCategory);
+    if (updateProductDto?.category && updateProductDto?.subCategory)
+      await this._CheckValidSubCategory(
+        updateProductDto?.subCategory,
+        updateProductDto?.category,
+      );
     if (updateProductDto?.brand)
       await this._CheckValidBrand(updateProductDto?.brand);
     if (

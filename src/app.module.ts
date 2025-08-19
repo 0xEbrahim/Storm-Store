@@ -21,6 +21,8 @@ import { ClientTicketModule } from './modules/client/ticket/ticket.module';
 import { AdminTaxModule } from './modules/admin/tax/tax.module';
 import { AdminProductModule } from './modules/admin/product/product.module';
 import { ClientProductModule } from './modules/client/product/product.module';
+import { AdminReviewModule } from './modules/admin/review/review.module';
+import { ClientReviewModule } from './modules/client/review/review.module';
 import path from 'node:path';
 
 @Module({
@@ -79,6 +81,8 @@ import path from 'node:path';
     AdminTaxModule,
     AdminProductModule,
     ClientProductModule,
+    AdminReviewModule,
+    ClientReviewModule,
   ],
 })
 export class AppModule {}
