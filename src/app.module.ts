@@ -18,6 +18,7 @@ import { AdminSupplierModule } from './modules/admin/supplier/supplier.module';
 import { ClientSupplierModule } from './modules/client/supplier/supplier.module';
 import { AdminTicketModule } from './modules/admin/ticket/ticket.module';
 import { ClientTicketModule } from './modules/client/ticket/ticket.module';
+import { AdminTaxModule } from './modules/admin/tax/tax.module';
 import path from 'node:path';
 
 @Module({
@@ -73,6 +74,7 @@ import path from 'node:path';
     ClientSupplierModule,
     AdminTicketModule,
     ClientTicketModule,
+    AdminTaxModule,
   ],
 })
 export class AppModule {}
