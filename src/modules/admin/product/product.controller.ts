@@ -34,24 +34,48 @@ import { QueryDto } from 'src/common/dto/query.dto';
 export class AdminProductController {
   constructor(private readonly productService: AdminProductService) {}
 
+  /**
+   * @desc Admin creats a product
+   * @access Private [Admin]
+   * @method Post
+   * @route /api/v1/admin/product/
+   */
   @ApiBody({ type: AdminCreateProductDto })
   @Post()
   async create(@Body() createProductDto: AdminCreateProductDto) {
     return await this.productService.create(createProductDto);
   }
 
+  /**
+   * @desc Admin gets all products
+   * @access Private [Admin]
+   * @method Get
+   * @route /api/v1/admin/product/
+   */
   @ApiQuery({ type: QueryDto })
   @Get()
   async findAll(@Query() q: any) {
     return await this.productService.findAll(q);
   }
 
+  /**
+   * @desc Admin gets one product
+   * @access Private [Admin]
+   * @method Get
+   * @route /api/v1/admin/product/:id
+   */
   @ApiParam({ name: 'id', type: '68a4496b6d637811b8269650' })
   @Get(':id')
   async findOne(@Param('id', ParseObjectId) id: string) {
     return await this.productService.findOne(id);
   }
 
+  /**
+   * @desc Admin updates one product
+   * @access Private [Admin]
+   * @method Patch
+   * @route /api/v1/admin/product/:id
+   */
   @ApiParam({ name: 'id', type: '68a4496b6d637811b8269650' })
   @ApiBody({ type: AdminUpdateProductDto })
   @Patch(':id')
@@ -62,6 +86,12 @@ export class AdminProductController {
     return await this.productService.update(id, updateProductDto);
   }
 
+  /**
+   * @desc Admin deletes one product
+   * @access Private [Admin]
+   * @method Delete
+   * @route /api/v1/admin/product/:id
+   */
   @ApiParam({ name: 'id', type: '68a4496b6d637811b8269650' })
   @Delete(':id')
   async remove(@Param('id', ParseObjectId) id: string) {

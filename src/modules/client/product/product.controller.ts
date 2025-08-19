@@ -16,12 +16,24 @@ import { ParseObjectId } from 'src/common/pipes/parseObjectId.pipe';
 export class ClientProductController {
   constructor(private readonly productService: ClientProductService) {}
 
+  /**
+   * @desc User gets all products
+   * @access Public [Admin, User]
+   * @method Get
+   * @route /api/v1/admin/product
+   */
   @ApiQuery({ type: QueryDto })
   @Get()
   async findAll(@Query() q: any) {
     return await this.productService.findAll(q);
   }
 
+  /**
+   * @desc User gets one product
+   * @access Public [Admin, User]
+   * @method Get
+   * @route /api/v1/admin/product/:id
+   */
   @ApiParam({ name: 'id', type: '68a4496b6d637811b8269650' })
   @Get(':id')
   async findOne(@Param('id', ParseObjectId) id: string) {

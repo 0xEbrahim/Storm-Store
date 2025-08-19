@@ -34,6 +34,12 @@ import { QueryDto } from 'src/common/dto/query.dto';
 export class AdminReviewController {
   constructor(private readonly reviewService: AdminReviewService) {}
 
+  /**
+   * @desc Admin creates a review
+   * @access Private [Admin]
+   * @method Post
+   * @route /api/v1/admin/review
+   */
   @ApiBody({ type: AdminCreateReviewDto })
   @Post()
   async create(
@@ -43,18 +49,36 @@ export class AdminReviewController {
     return await this.reviewService.create(createReviewDto, user.id);
   }
 
+  /**
+   * @desc Admin gets all reviews
+   * @access Private [Admin]
+   * @method Get
+   * @route /api/v1/admin/review
+   */
   @ApiQuery({ type: QueryDto })
   @Get()
   async findAll(@Query() q: any) {
     return await this.reviewService.findAll(q);
   }
 
+  /**
+   * @desc Admin gets one review
+   * @access Private [Admin]
+   * @method Get
+   * @route /api/v1/admin/review/:id
+   */
   @ApiParam({ name: 'id', type: '68a34a6dfce71b19a24d00bb' })
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return await this.reviewService.findOne(id);
   }
 
+  /**
+   * @desc Admin updates one review
+   * @access Private [Admin]
+   * @method Patch
+   * @route /api/v1/admin/review/:id
+   */
   @ApiParam({ name: 'id', type: '68a34a6dfce71b19a24d00bb' })
   @ApiBody({ type: AdminUpdateReviewDto })
   @Patch(':id')
@@ -65,6 +89,12 @@ export class AdminReviewController {
     return await this.reviewService.update(id, updateReviewDto);
   }
 
+  /**
+   * @desc Admin deletes one review
+   * @access Private [Admin]
+   * @method Delete
+   * @route /api/v1/admin/review/:id
+   */
   @ApiParam({ name: 'id', type: '68a34a6dfce71b19a24d00bb' })
   @Delete(':id')
   async remove(@Param('id') id: string) {
