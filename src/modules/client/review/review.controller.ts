@@ -28,23 +28,47 @@ import { QueryDto } from 'src/common/dto/query.dto';
 export class ClientReviewController {
   constructor(private readonly reviewService: ClientReviewService) {}
 
+  /**
+   * @desc User creates a review
+   * @access Public [Admin, User]
+   * @method Post
+   * @route /api/v1/admin/review
+   */
   @ApiBody({ type: ClientCreateReviewDto })
   @Post()
   create(@Body() createReviewDto: ClientCreateReviewDto, @User() user: any) {
     return this.reviewService.create(createReviewDto, user.id);
   }
 
+  /**
+   * @desc User gets all his reviews
+   * @access Public [Admin, User]
+   * @method Get
+   * @route /api/v1/admin/review
+   */
   @ApiQuery({ type: QueryDto })
   @Get()
   findAll(@Query() q: any, @User() user: any) {
     return this.reviewService.findAll(q, user.id);
   }
 
+  /**
+   * @desc User gets one review
+   * @access Public [Admin, User]
+   * @method Get
+   * @route /api/v1/admin/review/:id
+   */
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.reviewService.findOne(id);
   }
 
+  /**
+   * @desc User updates one review
+   * @access Public [Admin, User]
+   * @method Patch
+   * @route /api/v1/admin/review/:id
+   */
   @Patch(':id')
   update(
     @Param('id') id: string,
@@ -54,6 +78,12 @@ export class ClientReviewController {
     return this.reviewService.update(id, updateReviewDto, user.id);
   }
 
+  /**
+   * @desc User deletes one review
+   * @access Public [Admin, User]
+   * @method Delete
+   * @route /api/v1/admin/review/:id
+   */
   @Delete(':id')
   remove(@Param('id') id: string, @User() user: any) {
     return this.reviewService.remove(id, user.id);
