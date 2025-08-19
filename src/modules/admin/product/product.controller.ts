@@ -17,7 +17,13 @@ import { AuthGuard } from 'src/common/guards/Auth.guard';
 import { RolesGuard } from 'src/common/guards/Role.guard';
 import { Role } from 'src/common/decorators/roles.decorator';
 import { Roles } from '../user/Schema/user.schema';
-import { ApiBearerAuth, ApiBody, ApiQuery, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiParam,
+  ApiQuery,
+  ApiTags,
+} from '@nestjs/swagger';
 import { QueryDto } from 'src/common/dto/query.dto';
 
 @Controller('admin/product')
@@ -40,11 +46,14 @@ export class AdminProductController {
     return await this.productService.findAll(q);
   }
 
+  @ApiParam({ name: 'id', type: '68a4496b6d637811b8269650' })
   @Get(':id')
   async findOne(@Param('id', ParseObjectId) id: string) {
     return await this.productService.findOne(id);
   }
 
+  @ApiParam({ name: 'id', type: '68a4496b6d637811b8269650' })
+  @ApiBody({ type: AdminUpdateProductDto })
   @Patch(':id')
   async update(
     @Param('id', ParseObjectId) id: string,
@@ -53,6 +62,7 @@ export class AdminProductController {
     return await this.productService.update(id, updateProductDto);
   }
 
+  @ApiParam({ name: 'id', type: '68a4496b6d637811b8269650' })
   @Delete(':id')
   async remove(@Param('id', ParseObjectId) id: string) {
     return await this.productService.remove(id);
