@@ -9,12 +9,14 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Cart } from 'src/modules/admin/cart/schema/cart.schema';
 import { Model } from 'mongoose';
 import { Product } from 'src/modules/admin/product/schema/product.schema';
+import { Coupon } from 'src/modules/admin/coupon/schema/coupon.schema';
 
 @Injectable()
 export class ClientCartService {
   constructor(
     @InjectModel(Cart.name) private CartModel: Model<Cart>,
     @InjectModel(Product.name) private ProductModel: Model<Product>,
+    @InjectModel(Coupon.name) private CouponModel: Model<Coupon>,
   ) {}
 
   async create(
@@ -58,6 +60,28 @@ export class ClientCartService {
   async findOne(userId: string) {
     let cart = await this.CartModel.findOne({ user: userId });
     if (!cart) cart = await this.CartModel.create({ user: userId });
+    return { data: { cart } };
+  }
+
+  async applyCoupon(_coupon: string, userId: string) {
+    const cart = await this.CartModel.findOne({ user: userId });
+    const coupon = await this.CouponModel.findOne({ coupon: _coupon });
+    if (!cart || cart.cartItems.length === 0)
+      throw new BadRequestException(
+        'Your cart is empty, add something to be able to use coupons',
+      );
+    if (!coupon || coupon.expireIn <= new Date(Date.now()))
+      throw new BadRequestException('Invalid or expired coupon.');
+    const alreadyExists = cart.coupons.findIndex(
+      (e) => e.toString() === _coupon.toString(),
+    );
+    if (alreadyExists !== -1)
+      throw new BadRequestException('You already used this coupon');
+    if (cart.totalPrice <= 0)
+      throw new BadRequestException('You have already applied 100% discount');
+    cart.coupons.push(_coupon);
+    cart.totalPrice = Math.max(0, cart.totalPrice - coupon.discount);
+    await cart.save();
     return { data: { cart } };
   }
 
