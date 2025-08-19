@@ -31,12 +31,5 @@ export class ClientOrderController {
     return this.orderService.create(createOrderDto, user.id);
   }
 
-  @Patch('checkout/:orderId/cash')
-  async updateInCash(
-    @Param('orderId') orderId: string,
-    @Body()
-    updateOrderDto: ClientUpdateOrderDto,
-  ) {
-    return await this.orderService.updateInCash(orderId, updateOrderDto);
-  }
+  
 }

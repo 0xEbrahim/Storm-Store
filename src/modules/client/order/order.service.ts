@@ -129,57 +129,5 @@ export class ClientOrderService {
     };
   }
 
-  async updateInCash(orderId: string, updateOrderDto: ClientUpdateOrderDto) {
-    const order = await this.OrderModel.findById(orderId);
-    if (!order) {
-      throw new NotFoundException('Order not found');
-    }
-    const user = await this.UserModel.findById(order.user.toString());
-    if (order.paymentMethodType !== 'Cash') {
-      throw new BadRequestException('This order not paid by cash');
-    }
-
-    if (order.isPaid) {
-      throw new BadRequestException('Order already paid');
-    }
-    if (updateOrderDto.isPaid) {
-      updateOrderDto.paidAt = new Date();
-      const cart = await this.CartModel.findOne({
-        user: order.user.toString(),
-      }).populate('cartItems.product user');
-      if (!cart) throw new NotFoundException('cart not found');
-      cart.cartItems.forEach(async (item) => {
-        await this.ProductModel.findByIdAndUpdate(
-          item.product,
-          { $inc: { quantity: -item.quantity, sold: item.quantity } },
-          { new: true },
-        );
-      });
-      const data: EmailType = {
-        from: this.config.get<string>('SMTP_USER')!,
-        to: user?.email!,
-        subject: 'Cash paid',
-        template: path.join(__dirname, '../../../templates/cash-paid.ejs'),
-        data: {
-          name: user?.name,
-          id: cart.id,
-        },
-      };
-      await this.EmailService.sendMail(data);
-      await this.CartModel.findOneAndUpdate(
-        { user: order.user.toString() },
-        { cartItems: [], totalPrice: 0 },
-      );
-    }
-    if (updateOrderDto.isDeliverd) {
-      updateOrderDto.deliverdAt = new Date();
-    }
-
-    const updatedOrder = await this.OrderModel.findByIdAndUpdate(
-      orderId,
-      { ...updateOrderDto },
-      { new: true },
-    );
-    return { data: { order: updatedOrder } };
-  }
+  
 }
