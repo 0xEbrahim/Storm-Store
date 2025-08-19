@@ -23,6 +23,8 @@ import { AdminProductModule } from './modules/admin/product/product.module';
 import { ClientProductModule } from './modules/client/product/product.module';
 import { AdminReviewModule } from './modules/admin/review/review.module';
 import { ClientReviewModule } from './modules/client/review/review.module';
+import { ClientCartModule } from './modules/client/cart/cart.module';
+import { AdminCartModule } from './modules/admin/cart/cart.module';
 import path from 'node:path';
 
 @Module({
@@ -83,6 +85,8 @@ import path from 'node:path';
     ClientProductModule,
     AdminReviewModule,
     ClientReviewModule,
+    ClientCartModule,
+    AdminCartModule,
   ],
 })
 export class AppModule {}
