@@ -34,24 +34,48 @@ import { ParseObjectId } from 'src/common/pipes/parseObjectId.pipe';
 export class AdminSupplierController {
   constructor(private readonly supplierService: AdminSupplierService) {}
 
+  /**
+   * @desc Admin creates a supplier
+   * @access Private [Admin]
+   * @method Post
+   * @route /api/v1/admin/supplier/
+   */
   @ApiBody({ type: AdminCreateSupplierDto })
   @Post()
   create(@Body() createSupplierDto: AdminCreateSupplierDto) {
     return this.supplierService.create(createSupplierDto);
   }
 
+  /**
+   * @desc Admin gets all suppliers
+   * @access Private [Admin]
+   * @method Get
+   * @route /api/v1/admin/supplier/
+   */
   @ApiQuery({ type: QueryDto })
   @Get()
   findAll(@Query() q: any) {
     return this.supplierService.findAll(q);
   }
 
+  /**
+   * @desc Admin gets one supplier
+   * @access Private [Admin]
+   * @method Get
+   * @route /api/v1/admin/supplier/:id
+   */
   @ApiParam({ name: 'id', type: '68a1a451b77f4a0abeeb3ce5' })
   @Get(':id')
   findOne(@Param('id', ParseObjectId) id: string) {
     return this.supplierService.findOne(id);
   }
 
+  /**
+   * @desc Admin updates one supplier
+   * @access Private [Admin]
+   * @method Patch
+   * @route /api/v1/admin/supplier/:id
+   */
   @ApiParam({ name: 'id', type: '68a1a451b77f4a0abeeb3ce5' })
   @ApiBody({ type: AdminUpdateSupplierDto })
   @Patch(':id')
@@ -62,6 +86,12 @@ export class AdminSupplierController {
     return this.supplierService.update(id, updateSupplierDto);
   }
 
+  /**
+   * @desc Admin deletes one supplier
+   * @access Private [Admin]
+   * @method Delete
+   * @route /api/v1/admin/supplier/:id
+   */
   @ApiParam({ name: 'id', type: '68a1a451b77f4a0abeeb3ce5' })
   @Delete(':id')
   remove(@Param('id', ParseObjectId) id: string) {

@@ -1,5 +1,5 @@
 import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
-import { ClientSupplierService } from './supplier.service';
+import { ClientProductService } from './product.service';
 import { AuthGuard } from 'src/common/guards/Auth.guard';
 import { RolesGuard } from 'src/common/guards/Role.guard';
 import { Role } from 'src/common/decorators/roles.decorator';
@@ -8,35 +8,23 @@ import { ApiBearerAuth, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { QueryDto } from 'src/common/dto/query.dto';
 import { ParseObjectId } from 'src/common/pipes/parseObjectId.pipe';
 
-@Controller('supplier')
+@Controller('product')
 @UseGuards(AuthGuard, RolesGuard)
 @Role(Roles.USER, Roles.ADMIN)
-@ApiTags('Supplier')
 @ApiBearerAuth()
-export class ClientSupplierController {
-  constructor(private readonly supplierService: ClientSupplierService) {}
+@ApiTags('Product')
+export class ClientProductController {
+  constructor(private readonly productService: ClientProductService) {}
 
-  /**
-   * @desc user gets all suppliers
-   * @access Public [Admin, User]
-   * @method Get
-   * @route /api/v1/supplier
-   */
   @ApiQuery({ type: QueryDto })
   @Get()
   async findAll(@Query() q: any) {
-    return await this.supplierService.findAll(q);
+    return await this.productService.findAll(q);
   }
 
-  /**
-   * @desc user gets one supplier
-   * @access Public [Admin, User]
-   * @method Get
-   * @route /api/v1/supplier/:id
-   */
-  @ApiParam({ name: 'id', type: '68a1a451b77f4a0abeeb3ce5' })
+  @ApiParam({ name: 'id', type: '68a4496b6d637811b8269650' })
   @Get(':id')
   async findOne(@Param('id', ParseObjectId) id: string) {
-    return this.supplierService.findOne(id);
+    return await this.productService.findOne(id);
   }
 }

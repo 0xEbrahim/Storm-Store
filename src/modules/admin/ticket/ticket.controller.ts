@@ -16,12 +16,24 @@ import { ParseObjectId } from 'src/common/pipes/parseObjectId.pipe';
 export class AdminTicketController {
   constructor(private readonly ticketService: AdminTicketService) {}
 
+  /**
+   * @desc Admin gets all suppliers
+   * @access Private [Admin]
+   * @method Get
+   * @route /api/v1/admin/ticket/
+   */
   @ApiQuery({ type: QueryDto })
   @Get()
   async findAll(@Query() q: any) {
     return await this.ticketService.findAll(q);
   }
 
+  /**
+   * @desc Admin gets one supplier
+   * @access Private [Admin]
+   * @method Get
+   * @route /api/v1/admin/ticket/:id
+   */
   @ApiParam({ name: 'id', type: '68a36b54a7ebf2eb12e7fbd2' })
   @Get(':id')
   async findOne(@Param('id', ParseObjectId) id: string) {
