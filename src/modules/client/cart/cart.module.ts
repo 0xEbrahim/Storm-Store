@@ -10,6 +10,7 @@ import {
 } from 'src/modules/admin/product/schema/product.schema';
 import { User, UserSchema } from 'src/modules/admin/user/Schema/user.schema';
 import { JWTService } from 'src/modules/jwt/jwt.service';
+import { Coupon, CouponSchema } from 'src/modules/admin/coupon/schema/coupon.schema';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { JWTService } from 'src/modules/jwt/jwt.service';
       { name: Cart.name, schema: CartSchema },
       { name: Product.name, schema: ProductSchema },
       { name: User.name, schema: UserSchema },
+      { name: Coupon.name, schema: CouponSchema},
     ]),
   ],
   controllers: [ClientCartController],

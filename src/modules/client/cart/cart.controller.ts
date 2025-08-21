@@ -35,8 +35,23 @@ export class ClientCartController {
    */
   @ApiBody({ type: ClientCreateCartDto })
   @Post()
-  addToCart(@Body() createCartDto: ClientCreateCartDto, @User() user: any) {
-    return this.cartService.create(createCartDto, user.id);
+  async addToCart(
+    @Body() createCartDto: ClientCreateCartDto,
+    @User() user: any,
+  ) {
+    return await this.cartService.create(createCartDto, user.id);
+  }
+
+  /**
+   * @desc user apply coupon on his cart
+   * @access Public [Admin, User]
+   * @method Patch
+   * @route /api/v1/cart/coupon/:coupon
+   */
+  @ApiParam({ name: 'coupon', type: 'ddshbcd12' })
+  @Patch('/coupon/:coupon')
+  async applyCoupon(@Param('coupon') coupon: string, @User() user: any) {
+    return await this.cartService.applyCoupon(coupon, user.id);
   }
 
   /**
@@ -46,8 +61,8 @@ export class ClientCartController {
    * @route /api/v1/cart
    */
   @Get()
-  findOne(@User() user: any) {
-    return this.cartService.findOne(user.id);
+  async findOne(@User() user: any) {
+    return await this.cartService.findOne(user.id);
   }
 
   /**
@@ -58,8 +73,8 @@ export class ClientCartController {
    */
   @ApiBody({ type: ClientUpdateCartDto })
   @Patch()
-  update(@User() user: any, @Body() updateCartDto: ClientUpdateCartDto) {
-    return this.cartService.update(user.id, updateCartDto);
+  async update(@User() user: any, @Body() updateCartDto: ClientUpdateCartDto) {
+    return await this.cartService.update(user.id, updateCartDto);
   }
 
   /**
@@ -70,7 +85,7 @@ export class ClientCartController {
    */
   @ApiBody({ type: RemoveFromCartDto })
   @Delete()
-  remove(@User() user: any, @Body('productId') pId: string) {
-    return this.cartService.remove(user.id, pId);
+  async remove(@User() user: any, @Body('productId') pId: string) {
+    return await this.cartService.remove(user.id, pId);
   }
 }
