@@ -13,5 +13,8 @@
   "FULL_DISCOUNT_ALREADY_APPLIED": "You have already applied 100% discount",
   "EMPTY_CART": "Your cart is empty",
   "PRODUCT_NOT_IN_CART": "Product does not exist in your cart",
-  "PRODUCT_REMOVED_FROM_CART": "Product removed from cart"
+  "PRODUCT_REMOVED_FROM_CART": "Product removed from cart",
+  "EMPTY_CART_CHECKOUT": "Nothing to checkout, cart is empty",
+  "UNAUTHORIZED_ACTION": "You are not authorized to do this",
+  "SHIPPING_ADDRESS_REQUIRED": "You have to provide a shipping address"
 }

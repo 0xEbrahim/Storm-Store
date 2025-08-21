@@ -13,5 +13,8 @@
   "FULL_DISCOUNT_ALREADY_APPLIED": "لقد طبقتم بالفعل خصم 100٪",
   "EMPTY_CART": "عربة التسوق فارغة",
   "PRODUCT_NOT_IN_CART": "المنتج غير موجود في عربة التسوق",
-  "PRODUCT_REMOVED_FROM_CART": "تم إزالة المنتج من عربة التسوق"
+  "PRODUCT_REMOVED_FROM_CART": "تم إزالة المنتج من عربة التسوق",
+  "EMPTY_CART_CHECKOUT": "لا شيء للدفع، عربة التسوق فارغة",
+  "UNAUTHORIZED_ACTION": "أنت غير مصرح لك بهذا الإجراء",
+  "SHIPPING_ADDRESS_REQUIRED": "يجب تقديم عنوان الشحن"
 }
