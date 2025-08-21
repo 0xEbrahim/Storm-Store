@@ -39,6 +39,7 @@ import { CacheModule } from '@nestjs/cache-manager';
 import { redisStore } from 'cache-manager-redis-store';
 import { RedisModule } from '@nestjs-modules/ioredis';
 import { BullModule } from '@nestjs/bullmq';
+import { HealthModule } from './modules/health/health.module';
 
 @Module({
   imports: [
@@ -88,16 +89,18 @@ import { BullModule } from '@nestjs/bullmq';
       }),
     }),
     RedisModule.forRootAsync({
-      useFactory: () => ({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
         type: 'single',
-        url: 'redis://redis:6379',
+        url: `redis://${config.get<string>('REDIS_USERNAME')}:${config.get<string>('REDIS_PASS')}@${config.get<string>('REDIS_HOST')}:${config.get<string>('REDIS_PORT')}`,
       }),
     }),
+
     BullModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
         connection: {
-          url: config.get<string>('DOCKER_REDIS_URI'),
+          url: config.get<string>('REDIS_URI'),
         },
         defaultJobOptions: {
           attempts: 15,
@@ -110,7 +113,7 @@ import { BullModule } from '@nestjs/bullmq';
     MongooseModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
-        uri: config.get<string>('ME_CONFIG_MONGODB_URL'),
+        uri: config.get<string>('MONGO_URL'),
       }),
     }),
     UserModule,
@@ -138,6 +141,7 @@ import { BullModule } from '@nestjs/bullmq';
     AdminOrderModule,
     ClientOrderModule,
     CloudinaryModule,
+    HealthModule,
   ],
 })
 export class AppModule {}
