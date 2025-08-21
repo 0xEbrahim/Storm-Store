@@ -16,7 +16,7 @@ import stringify from 'fast-json-stable-stringify';
 
 @Injectable()
 export class AdminSupplierService {
-  private cacheKeyPrefix = 'suppliers';
+  private cacheKeyPrefix = 'supplier';
 
   constructor(
     @InjectModel(Supplier.name) private SupplierModel: Model<Supplier>,
