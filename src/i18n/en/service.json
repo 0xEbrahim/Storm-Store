@@ -16,5 +16,7 @@
   "PRODUCT_REMOVED_FROM_CART": "Product removed from cart",
   "EMPTY_CART_CHECKOUT": "Nothing to checkout, cart is empty",
   "UNAUTHORIZED_ACTION": "You are not authorized to do this",
-  "SHIPPING_ADDRESS_REQUIRED": "You have to provide a shipping address"
+  "SHIPPING_ADDRESS_REQUIRED": "You have to provide a shipping address",
+  "NOT_CASH_ORDER": "This order not paid by cash",
+  "ORDER_ALREADY_PAID": "Order already paid"
 }

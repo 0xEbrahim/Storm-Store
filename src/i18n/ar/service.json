@@ -16,5 +16,7 @@
   "PRODUCT_REMOVED_FROM_CART": "تم إزالة المنتج من عربة التسوق",
   "EMPTY_CART_CHECKOUT": "لا شيء للدفع، عربة التسوق فارغة",
   "UNAUTHORIZED_ACTION": "أنت غير مصرح لك بهذا الإجراء",
-  "SHIPPING_ADDRESS_REQUIRED": "يجب تقديم عنوان الشحن"
+  "SHIPPING_ADDRESS_REQUIRED": "يجب تقديم عنوان الشحن",
+  "NOT_CASH_ORDER": "هذا الطلب لم يتم دفعه نقداً",
+  "ORDER_ALREADY_PAID": "الطلب مدفوع بالفعل"
 }

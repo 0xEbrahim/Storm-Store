@@ -14,6 +14,7 @@ import { ConfigService } from '@nestjs/config';
 import { EmailService, EmailType } from 'src/modules/email/email.service';
 import { AdminUpdateOrderDto } from './dto/UpdateCash.dto';
 import path from 'node:path';
+import { I18nService } from 'nestjs-i18n';
 
 @Injectable()
 export class AdminOrderService {
@@ -25,27 +26,45 @@ export class AdminOrderService {
     @InjectModel(Product.name) private ProductModel: Model<Product>,
     private config: ConfigService,
     private EmailService: EmailService,
+    private readonly i18n: I18nService,
   ) {}
 
   async updateInCash(orderId: string, updateOrderDto: AdminUpdateOrderDto) {
     const order = await this.OrderModel.findById(orderId);
     if (!order) {
-      throw new NotFoundException('Order not found');
+      throw new NotFoundException(
+        await this.i18n.t('service.NOT_FOUND', {
+          args: {
+            name: await this.i18n.t('common.ORDER'),
+          },
+        }),
+      );
     }
     const user = await this.UserModel.findById(order.user.toString());
     if (order.paymentMethodType !== 'Cash') {
-      throw new BadRequestException('This order not paid by cash');
+      throw new BadRequestException(
+        await this.i18n.t('service.NOT_CASH_ORDER'),
+      );
     }
 
     if (order.isPaid) {
-      throw new BadRequestException('Order already paid');
+      throw new BadRequestException(
+        await this.i18n.t('service.ORDER_ALREADY_PAID'),
+      );
     }
     if (updateOrderDto.isPaid) {
       updateOrderDto.paidAt = new Date();
       const cart = await this.CartModel.findOne({
         user: order.user.toString(),
       }).populate('cartItems.product user');
-      if (!cart) throw new NotFoundException('cart not found');
+      if (!cart)
+        throw new NotFoundException(
+          await this.i18n.t('service.NOT_FOUND', {
+            args: {
+              name: await this.i18n.t('common.CART'),
+            },
+          }),
+        );
       cart.cartItems.forEach(async (item) => {
         await this.ProductModel.findByIdAndUpdate(
           item.product,
