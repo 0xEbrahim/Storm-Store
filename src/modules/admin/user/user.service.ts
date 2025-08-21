@@ -43,6 +43,7 @@ export class UserService {
       );
     }
     const user = await this.UserModel.create(createUserDto);
+    await this._INVALIDATE_USER_CACHE();
     return { data: { user } };
   }
 

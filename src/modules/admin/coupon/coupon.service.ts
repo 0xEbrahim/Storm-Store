@@ -47,6 +47,7 @@ export class AdminCouponService {
       discount: discount,
       expireIn: expireIn,
     });
+    await this._INVALIDATE_COUPON_CACHE();
     return { data: { coupon } };
   }
 

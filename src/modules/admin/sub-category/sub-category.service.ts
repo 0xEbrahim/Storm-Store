@@ -61,6 +61,7 @@ export class AdminSubCategoryService {
       categoryId,
       name,
     });
+    await this._INVALIDATE_SUB_CATEGORY_CACHE();
     return { data: { subCategory } };
   }
 

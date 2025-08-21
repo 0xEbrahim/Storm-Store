@@ -106,6 +106,7 @@ export class AdminProductService {
       );
     }
     const product = await this.ProductModel.create(createProductDto);
+    await this._INVALIDATE_PRODUCT_CACHE();
     product.populate('category subCategory brand');
     return { data: { product } };
   }
@@ -116,6 +117,7 @@ export class AdminProductService {
     const cacheKey = `${this.cacheKeyPrefix}:${stringify(q)}`;
     const cachedData = await this.redis.get(cacheKey);
     if (cachedData) {
+      console.log('Cache hit');
       return JSON.parse(cachedData);
     }
     const query = new ApiFeatures(this.ProductModel.find({}), q)

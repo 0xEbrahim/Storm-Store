@@ -90,14 +90,14 @@ import { BullModule } from '@nestjs/bullmq';
     RedisModule.forRootAsync({
       useFactory: () => ({
         type: 'single',
-        url: 'redis://default@127.0.0.1:6379',
+        url: 'redis://redis:6379',
       }),
     }),
     BullModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
         connection: {
-          url: config.get<string>('REDIS_URI'),
+          url: config.get<string>('DOCKER_REDIS_URI'),
         },
         defaultJobOptions: {
           attempts: 15,
@@ -110,7 +110,7 @@ import { BullModule } from '@nestjs/bullmq';
     MongooseModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
-        uri: config.get<string>('MONGO_URL'),
+        uri: config.get<string>('ME_CONFIG_MONGODB_URL'),
       }),
     }),
     UserModule,

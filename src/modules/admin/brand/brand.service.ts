@@ -23,7 +23,7 @@ export class AdminBrandService {
     private readonly i18n: I18nService,
   ) {}
 
-  private async _INVALIDATE_CART_CACHE() {
+  private async _INVALIDATE_BRAND_CACHE() {
     const keys = await this.redis.keys(`${this.cacheKeyPrefix}:*`);
     if (keys.length > 0) this.redis.del(keys);
   }
@@ -43,6 +43,7 @@ export class AdminBrandService {
   async create(createbrandDto: AdminCreateBrandDto) {
     await this._CheckValidName(createbrandDto.name);
     const brand = await this.BrandModel.create(createbrandDto);
+    await this._INVALIDATE_BRAND_CACHE();
     return { data: { brand } };
   }
 
@@ -96,7 +97,7 @@ export class AdminBrandService {
     brand = await this.BrandModel.findByIdAndUpdate(id, updateBrandDto, {
       new: true,
     });
-    await this._INVALIDATE_CART_CACHE();
+    await this._INVALIDATE_BRAND_CACHE();
     return { data: { brand } };
   }
 
@@ -111,6 +112,6 @@ export class AdminBrandService {
         }),
       );
     await this.BrandModel.findByIdAndDelete(id);
-    await this._INVALIDATE_CART_CACHE();
+    await this._INVALIDATE_BRAND_CACHE();
   }
 }

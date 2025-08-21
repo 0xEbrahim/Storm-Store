@@ -20,18 +20,25 @@ import { Cart } from 'src/modules/admin/cart/schema/cart.schema';
 import { I18n, I18nContext, I18nService } from 'nestjs-i18n';
 import { InjectQueue } from '@nestjs/bullmq';
 import { Queue } from 'bullmq';
+import { InjectRedis } from '@nestjs-modules/ioredis';
+import Redis from 'ioredis';
 
 @Injectable()
 export class AuthService {
+  private cacheKeyPrefix = 'user';
   constructor(
     @InjectModel(User.name) private UserModel: Model<User>,
     @InjectModel(Cart.name) private CartModel: Model<Cart>,
     @InjectQueue('email') private emailQueue: Queue,
+    @InjectRedis() private redis: Redis,
     private jwt: JWTService,
-    private emailService: EmailService,
     private config: ConfigService,
     private readonly I18n: I18nService,
   ) {}
+  private async _INVALIDATE_USER_CACHE() {
+    const keys = await this.redis.keys(`${this.cacheKeyPrefix}:*`);
+    if (keys.length > 0) this.redis.del(keys);
+  }
 
   async SignUp({ email, name, password }: SignUpDTO) {
     let user = await this.UserModel.findOne({ email: email });
@@ -45,6 +52,7 @@ export class AuthService {
       );
     user = await this.UserModel.create({ name, email, password });
     await this.CartModel.create({ user: user._id });
+    await this._INVALIDATE_USER_CACHE();
     return { data: { user } };
   }
 
