@@ -9,6 +9,7 @@ import {
   UseGuards,
   Req,
   HttpCode,
+  UseFilters,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -21,11 +22,13 @@ import { ParseObjectId } from 'src/common/pipes/parseObjectId.pipe';
 import { RolesGuard } from 'src/common/guards/Role.guard';
 import { ApiBearerAuth, ApiBody, ApiParam, ApiQuery } from '@nestjs/swagger';
 import { QueryDto } from 'src/common/dto/query.dto';
+import { I18nValidationExceptionFilter } from 'nestjs-i18n';
 
 @Controller('admin/user')
 @UseGuards(AuthGuard, RolesGuard)
 @Role(Roles.ADMIN)
 @ApiBearerAuth()
+@UseFilters(new I18nValidationExceptionFilter())
 export class UserController {
   constructor(private readonly userService: UserService) {}
 

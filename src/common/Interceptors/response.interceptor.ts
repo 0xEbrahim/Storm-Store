@@ -26,7 +26,6 @@ export class ResponseInterceptor implements NestInterceptor {
         size: data?.size,
         data: data?.data,
         token: data?.token,
-        timestamp: Date.now(),
       })),
     );
   }

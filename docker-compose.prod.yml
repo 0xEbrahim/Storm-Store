@@ -1,0 +1,7 @@
+services:
+  web:
+    environment:
+      - NODE_ENV=production
+    env_file:
+      - .env
+    command: npm run start

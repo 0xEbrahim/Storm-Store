@@ -1,0 +1,9 @@
+services:
+  web:
+    environment:
+      - NODE_ENV=development
+    env_file:
+      - .env
+    volumes:
+      - ./src/:/app/src:ro
+    command: npm run start:dev

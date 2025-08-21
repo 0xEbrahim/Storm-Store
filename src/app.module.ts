@@ -35,6 +35,9 @@ import {
   I18nModule,
   QueryResolver,
 } from 'nestjs-i18n';
+import { CacheModule } from '@nestjs/cache-manager';
+import { redisStore } from 'cache-manager-redis-store';
+import { RedisModule } from '@nestjs-modules/ioredis';
 
 @Module({
   imports: [
@@ -81,6 +84,12 @@ import {
       useFactory: (config: ConfigService) => ({
         secret: config.get<string>('JWT_AC_SEC'),
         global: true,
+      }),
+    }),
+    RedisModule.forRootAsync({
+      useFactory: () => ({
+        type: 'single',
+        url: 'redis://default@127.0.0.1:6379',
       }),
     }),
     MongooseModule.forRootAsync({
