@@ -2,6 +2,7 @@
   "USER": "User",
   "BRAND": "Brand",
   "CATEGORY": "Category",
+  "SUB_CATEGORY": "Sub category",
   "PRODUCT": "Product",
   "CART": "Cart",
   "ORDER": "Order",
