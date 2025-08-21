@@ -21,7 +21,6 @@ export class AdminOrderService {
   constructor(
     @InjectModel(Order.name) private OrderModel: Model<Order>,
     @InjectModel(Cart.name) private CartModel: Model<Cart>,
-    @InjectModel(Tax.name) private TaxModel: Model<Tax>,
     @InjectModel(User.name) private UserModel: Model<User>,
     @InjectModel(Product.name) private ProductModel: Model<Product>,
     private config: ConfigService,

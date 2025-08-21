@@ -10,14 +10,23 @@ import { Category } from './schema/category.schema';
 import { Model } from 'mongoose';
 import ApiFeatures from 'src/common/utils/APIFeatures';
 import { I18nService } from 'nestjs-i18n';
+import { InjectRedis } from '@nestjs-modules/ioredis';
+import Redis from 'ioredis';
+import stringify from 'fast-json-stable-stringify';
 
 @Injectable()
 export class CategoryService {
+  private cacheKeyPrefix = 'category';
   constructor(
     @InjectModel(Category.name) private CategoryModel: Model<Category>,
+    @InjectRedis() private redis: Redis,
     private readonly i18n: I18nService,
   ) {}
 
+  private async _INVALIDATE_CATEGORY_CACHE() {
+    const keys = await this.redis.keys(`${this.cacheKeyPrefix}:*`);
+    if (keys.length > 0) this.redis.del(keys);
+  }
   private async _checkValidName(name: string) {
     const category = await this.CategoryModel.findOne({ name: name });
     if (category)
@@ -39,13 +48,24 @@ export class CategoryService {
   async findAll(q: any) {
     q.page = q.page ? q.page : 1;
     q.limit = q.limit ? q.limit : 10;
+    const cacheKey = `${this.cacheKeyPrefix}:${stringify(q)}`;
+    const cachedData = await this.redis.get(cacheKey);
+    if (cachedData) {
+      return JSON.parse(cachedData);
+    }
     const query = new ApiFeatures(this.CategoryModel.find({}), q)
       .filter()
       .limitFields()
       .sort()
       .paginate();
     const categories = await query.exec();
-    return { data: { categories }, page: +q.page, size: categories.length };
+    const response = {
+      data: { categories },
+      page: +q.page,
+      size: categories.length,
+    };
+    await this.redis.set(cacheKey, JSON.stringify(response), 'EX', 60 * 60);
+    return response;
   }
 
   async findOne(id: string) {
@@ -78,6 +98,7 @@ export class CategoryService {
       updateCategoryDto,
       { new: true },
     );
+    await this._INVALIDATE_CATEGORY_CACHE();
     return { data: { category } };
   }
 
@@ -92,5 +113,6 @@ export class CategoryService {
         }),
       );
     await this.CategoryModel.findByIdAndDelete(id);
+    await this._INVALIDATE_CATEGORY_CACHE();
   }
 }

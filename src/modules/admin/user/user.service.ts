@@ -1,8 +1,10 @@
 import {
   BadRequestException,
+  Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import stringify from 'fast-json-stable-stringify';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
@@ -10,13 +12,22 @@ import { User } from './Schema/user.schema';
 import { Model } from 'mongoose';
 import ApiFeatures from 'src/common/utils/APIFeatures';
 import { I18nService } from 'nestjs-i18n';
+import Redis from 'ioredis';
+import { InjectRedis } from '@nestjs-modules/ioredis';
 
 @Injectable()
 export class UserService {
+  private cacheKeyPrefix = 'users';
   constructor(
     @InjectModel(User.name) private UserModel: Model<User>,
     private readonly i18n: I18nService,
+    @InjectRedis() private redis: Redis,
   ) {}
+
+  private async _INVALIDATE_USER_CACHE() {
+    const keys = await this.redis.keys(`${this.cacheKeyPrefix}:*`);
+    if (keys.length > 0) this.redis.del(keys);
+  }
 
   async create(createUserDto: CreateUserDto) {
     const userExist = await this.UserModel.findOne({
@@ -38,14 +49,23 @@ export class UserService {
   async findAll(q: any) {
     q.page = q.page ? q.page : 1;
     q.limit = q.limit ? q.limit : 10;
-
+    const cacheKey = `${this.cacheKeyPrefix}:${stringify(q)}`;
+    const cachedData = await this.redis.get(cacheKey);
+    if (cachedData) {
+      return JSON.parse(cachedData);
+    }
     const query = new ApiFeatures(this.UserModel.find({}), q)
       .filter()
       .limitFields()
       .paginate()
       .sort();
     const users = await query.exec();
-    return { data: { users }, page: +q.page, size: users.length };
+    const response = {
+      data: { users },
+      page: +q.page,
+      size: users.length,
+    };
+    return response;
   }
 
   async findOne(id: string) {
@@ -74,6 +94,7 @@ export class UserService {
     user = await this.UserModel.findByIdAndUpdate(id, updateUserDto, {
       new: true,
     });
+    await this._INVALIDATE_USER_CACHE();
     return { data: { user } };
   }
 
@@ -87,6 +108,8 @@ export class UserService {
           },
         }),
       );
+
     await this.UserModel.findByIdAndDelete(id);
+    await this._INVALIDATE_USER_CACHE();
   }
 }

@@ -8,7 +8,6 @@ import { User, UserSchema } from '../user/Schema/user.schema';
 import { JWTService } from 'src/modules/jwt/jwt.service';
 import { EmailService } from 'src/modules/email/email.service';
 import { Cart, CartSchema } from '../cart/schema/cart.schema';
-import { Tax, taxSchema } from '../tax/schema/tax.schema';
 import { Product, ProductSchema } from '../product/schema/product.schema';
 
 @Module({
@@ -18,7 +17,6 @@ import { Product, ProductSchema } from '../product/schema/product.schema';
       { name: Order.name, schema: OrderSchema },
       { name: User.name, schema: UserSchema },
       { name: Cart.name, schema: CartSchema },
-      { name: Tax.name, schema: taxSchema },
       { name: Product.name, schema: ProductSchema },
     ]),
   ],
