@@ -29,7 +29,7 @@ export class ClientOrderService {
     private config: ConfigService,
     private EmailService: EmailService,
   ) {
-    this.stripe = new Stripe(this.config.get<string>('STRIPE_SECRET_KEY')!);
+    this.stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
   }
 
   async create(
@@ -129,5 +129,69 @@ export class ClientOrderService {
     };
   }
 
-  
+  async updatePaidCard(payload: any, sig: any) {
+    const secret = process.env.STRIPE_WEBHOOK_SECRET;
+    let event;
+    try {
+      event = this.stripe.webhooks.constructEvent(
+        payload,
+        sig,
+        secret as string,
+      );
+    } catch (err) {
+      console.log(`Webhook Error: ${err.message}`);
+      return;
+    }
+
+    // Handle the event
+    switch (event.type) {
+      case 'checkout.session.completed':
+        const sessionId = event.data.object.id;
+
+        const order = await this.OrderModel.findOne({ sessionId });
+        if (!order) throw new NotFoundException('Order not found');
+        order.isPaid = true;
+        order.isDeliverd = true;
+        order.paidAt = new Date();
+        order.deliverdAt = new Date();
+
+        const cart = await this.CartModel.findOne({
+          user: order.user.toString(),
+        }).populate('cartItems.productId user');
+        if (!cart) throw new NotFoundException('Cart not found');
+
+        cart.cartItems.forEach(async (item) => {
+          await this.ProductModel.findByIdAndUpdate(
+            item.product,
+            { $inc: { quantity: -item.quantity, sold: item.quantity } },
+            { new: true },
+          );
+        });
+
+        // reset Cart
+        await this.CartModel.findOneAndUpdate(
+          { user: order.user.toString() },
+          { cartItems: [], totalPrice: 0 },
+        );
+
+        await order.save();
+        await cart.save();
+        const user = await this.UserModel.findById(order.user.toString());
+        const data: EmailType = {
+          from: this.config.get<string>('SMTP_USER')!,
+          to: user?.email!,
+          subject: 'Cash paid',
+          template: path.join(__dirname, '../../../templates/cash-paid.ejs'),
+          data: {
+            name: user?.name,
+            id: cart.id,
+          },
+        };
+
+        await this.EmailService.sendMail(data);
+        break;
+      default:
+        console.log(`Unhandled event type ${event.type}`);
+    }
+  }
 }
