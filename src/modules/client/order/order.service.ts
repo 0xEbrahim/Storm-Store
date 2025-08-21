@@ -17,6 +17,8 @@ import { ConfigService } from '@nestjs/config';
 import { Product } from 'src/modules/admin/product/schema/product.schema';
 import { EmailService, EmailType } from 'src/modules/email/email.service';
 import path from 'node:path';
+import { I18nService } from 'nestjs-i18n';
+
 @Injectable()
 export class ClientOrderService {
   stripe: Stripe;
@@ -28,6 +30,7 @@ export class ClientOrderService {
     @InjectModel(Product.name) private ProductModel: Model<Product>,
     private config: ConfigService,
     private EmailService: EmailService,
+    private readonly i18n: I18nService,
   ) {
     this.stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
   }
@@ -38,7 +41,9 @@ export class ClientOrderService {
   ) {
     const cart = await this.CartModel.findOne({ user: userId });
     if (!cart || cart.cartItems.length === 0) {
-      throw new BadRequestException('Nothing to checkout, cart is empty');
+      throw new BadRequestException(
+        await this.i18n.t('service.EMPTY_CART_CHECKOUT'),
+      );
     }
     let tax: any = await this.TaxModel.findOne({});
     if (!tax) {
@@ -46,10 +51,14 @@ export class ClientOrderService {
     }
     const user = await this.UserModel.findById(userId);
     if (!user)
-      throw new UnauthorizedException('You are not authorized to do this');
+      throw new UnauthorizedException(
+        await this.i18n.t('service.UNAUTHORIZED_ACTION'),
+      );
     shippingAddress = user.address ? user.address : shippingAddress;
     if (!shippingAddress)
-      throw new BadRequestException('You have to provide a shipping address');
+      throw new BadRequestException(
+        await this.i18n.t('service.SHIPPING_ADDRESS_REQUIRED'),
+      );
     paymentMethod = paymentMethod ? paymentMethod : 'Cash';
     const data = {
       cart: cart._id.toString(),
@@ -108,8 +117,6 @@ export class ClientOrderService {
     const sessions = await this.stripe.checkout.sessions.create({
       mode: 'payment',
       line_items: items,
-      success_url: 'https://www.google.com',
-      cancel_url: 'https://www.google.com',
       customer_email: user.email,
       client_reference_id: user.id,
     });
@@ -149,7 +156,14 @@ export class ClientOrderService {
         const sessionId = event.data.object.id;
 
         const order = await this.OrderModel.findOne({ sessionId });
-        if (!order) throw new NotFoundException('Order not found');
+        if (!order)
+          throw new NotFoundException(
+            await this.i18n.t('service.NOT_FOUND', {
+              args: {
+                name: await this.i18n.t('common.ORDER'),
+              },
+            }),
+          );
         order.isPaid = true;
         order.isDeliverd = true;
         order.paidAt = new Date();
@@ -158,7 +172,14 @@ export class ClientOrderService {
         const cart = await this.CartModel.findOne({
           user: order.user.toString(),
         }).populate('cartItems.productId user');
-        if (!cart) throw new NotFoundException('Cart not found');
+        if (!cart)
+          throw new NotFoundException(
+            await this.i18n.t('service.NOT_FOUND', {
+              args: {
+                name: await this.i18n.t('common.CART'),
+              },
+            }),
+          );
 
         cart.cartItems.forEach(async (item) => {
           await this.ProductModel.findByIdAndUpdate(

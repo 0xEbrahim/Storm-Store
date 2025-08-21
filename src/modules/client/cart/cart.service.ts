@@ -10,6 +10,7 @@ import { Cart } from 'src/modules/admin/cart/schema/cart.schema';
 import { Model } from 'mongoose';
 import { Product } from 'src/modules/admin/product/schema/product.schema';
 import { Coupon } from 'src/modules/admin/coupon/schema/coupon.schema';
+import { I18nService } from 'nestjs-i18n';
 
 @Injectable()
 export class ClientCartService {
@@ -17,6 +18,7 @@ export class ClientCartService {
     @InjectModel(Cart.name) private CartModel: Model<Cart>,
     @InjectModel(Product.name) private ProductModel: Model<Product>,
     @InjectModel(Coupon.name) private CouponModel: Model<Coupon>,
+    private readonly i18n: I18nService,
   ) {}
 
   async create(
@@ -26,17 +28,28 @@ export class ClientCartService {
     let cart = await this.CartModel.findOne({ user: userId });
     if (!cart) cart = await this.CartModel.create({ user: userId });
     const product = await this.ProductModel.findById(productId);
-    if (!product) throw new NotFoundException('Product not found');
+    if (!product)
+      throw new NotFoundException(
+        await this.i18n.t('service.NOT_FOUND', {
+          args: {
+            name: await this.i18n.t('common.PRODUCT'),
+          },
+        }),
+      );
     quantity = quantity ? quantity : 1;
     color = color ? color : '';
     const insertionIndex = cart.cartItems.findIndex(
       (e) => e.product.toString() === productId.toString(),
     );
     if (product.quantity < quantity)
-      throw new BadRequestException('product quantity is not enough');
+      throw new BadRequestException(
+        await this.i18n.t('service.INSUFFICIENT_QUANTITY'),
+      );
     if (insertionIndex === -1) {
       if (product.quantity < quantity)
-        throw new BadRequestException('product quantity is not enough');
+        throw new BadRequestException(
+          await this.i18n.t('service.INSUFFICIENT_QUANTITY'),
+        );
       cart.cartItems.push({
         product: productId,
         quantity,
@@ -68,17 +81,23 @@ export class ClientCartService {
     const coupon = await this.CouponModel.findOne({ coupon: _coupon });
     if (!cart || cart.cartItems.length === 0)
       throw new BadRequestException(
-        'Your cart is empty, add something to be able to use coupons',
+        await this.i18n.t('service.EMPTY_CART_COUPON'),
       );
     if (!coupon || coupon.expireIn <= new Date(Date.now()))
-      throw new BadRequestException('Invalid or expired coupon.');
+      throw new BadRequestException(
+        await this.i18n.t('service.INVALID_COUPON'),
+      );
     const alreadyExists = cart.coupons.findIndex(
       (e) => e.toString() === _coupon.toString(),
     );
     if (alreadyExists !== -1)
-      throw new BadRequestException('You already used this coupon');
+      throw new BadRequestException(
+        await this.i18n.t('service.COUPON_ALREADY_USED'),
+      );
     if (cart.totalPrice <= 0)
-      throw new BadRequestException('You have already applied 100% discount');
+      throw new BadRequestException(
+        await this.i18n.t('service.FULL_DISCOUNT_ALREADY_APPLIED'),
+      );
     cart.coupons.push(_coupon);
     cart.totalPrice = Math.max(0, cart.totalPrice - coupon.discount);
     await cart.save();
@@ -88,19 +107,30 @@ export class ClientCartService {
   async update(userId: string, updateCartDto: ClientUpdateCartDto) {
     const cart = await this.CartModel.findOne({ user: userId });
     if (!cart || cart.cartItems.length === 0) {
-      throw new BadRequestException('Your cart is empty');
+      throw new BadRequestException(await this.i18n.t('service.EMPTY_CART'));
     }
     const product = await this.ProductModel.findById(updateCartDto.productId);
-    if (!product) throw new NotFoundException('Product not found');
+    if (!product)
+      throw new NotFoundException(
+        await this.i18n.t('service.NOT_FOUND', {
+          args: {
+            name: await this.i18n.t('common.PRODUCT'),
+          },
+        }),
+      );
     const exists = cart.cartItems.findIndex(
       (e) => e.product.toString() === updateCartDto.productId.toString(),
     );
     if (exists === -1)
-      throw new BadRequestException('Product does not exist on your cart');
+      throw new BadRequestException(
+        await this.i18n.t('service.PRODUCT_NOT_IN_CART'),
+      );
 
     const quantity = updateCartDto?.quantity ? updateCartDto?.quantity : 1;
     if (quantity > product.quantity)
-      throw new BadRequestException('Product quantity is not enough');
+      throw new BadRequestException(
+        await this.i18n.t('service.INSUFFICIENT_QUANTITY'),
+      );
     cart.cartItems[exists].quantity = quantity;
     await cart.populate('cartItems.product', 'price discountPrice');
     let totalPrice = 0,
@@ -117,15 +147,24 @@ export class ClientCartService {
   async remove(userId: string, productId: string) {
     let cart = await this.CartModel.findOne({ user: userId });
     if (!cart || cart.cartItems.length === 0) {
-      throw new BadRequestException('Your cart is empty');
+      throw new BadRequestException(await this.i18n.t('service.EMPTY_CART'));
     }
     const product = await this.ProductModel.findById(productId);
-    if (!product) throw new NotFoundException('Product not found');
+    if (!product)
+      throw new NotFoundException(
+        await this.i18n.t('service.NOT_FOUND', {
+          args: {
+            name: await this.i18n.t('common.PRODUCT'),
+          },
+        }),
+      );
     const exists = cart.cartItems.findIndex(
       (e) => e.product.toString() === productId.toString(),
     );
     if (exists === -1)
-      throw new BadRequestException('Product does not exist on your cart');
+      throw new BadRequestException(
+        await this.i18n.t('service.PRODUCT_NOT_IN_CART'),
+      );
     await this.CartModel.findOneAndUpdate(
       { user: userId },
       { $pull: { cartItems: { product: productId } } },
@@ -141,6 +180,6 @@ export class ClientCartService {
     });
     cart.totalPrice = totalPrice - totalDiscountPrice;
     await cart.save();
-    return { message: 'Product removed from cart' };
+    return { message: await this.i18n.t('service.PRODUCT_REMOVED_FROM_CART') };
   }
 }

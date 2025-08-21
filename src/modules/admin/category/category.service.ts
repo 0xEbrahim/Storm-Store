@@ -9,16 +9,25 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Category } from './schema/category.schema';
 import { Model } from 'mongoose';
 import ApiFeatures from 'src/common/utils/APIFeatures';
+import { I18nService } from 'nestjs-i18n';
 
 @Injectable()
 export class CategoryService {
   constructor(
     @InjectModel(Category.name) private CategoryModel: Model<Category>,
+    private readonly i18n: I18nService,
   ) {}
 
   private async _checkValidName(name: string) {
     const category = await this.CategoryModel.findOne({ name: name });
-    if (category) throw new BadRequestException('Category already exists');
+    if (category)
+      throw new BadRequestException(
+        await this.i18n.t('service.ALREADY_EXISTS', {
+          args: {
+            name: await this.i18n.t('common.CATEGORY'),
+          },
+        }),
+      );
   }
 
   async create(createCategoryDto: AdminCreateCategoryDto) {
@@ -41,13 +50,27 @@ export class CategoryService {
 
   async findOne(id: string) {
     const category = await this.CategoryModel.findById(id);
-    if (!category) throw new NotFoundException('Category not found');
+    if (!category)
+      throw new NotFoundException(
+        await this.i18n.t('service.NOT_FOUND', {
+          args: {
+            name: await this.i18n.t('common.CATEGORY'),
+          },
+        }),
+      );
     return { data: { category } };
   }
 
   async update(id: string, updateCategoryDto: UpdateCategoryDto) {
     let category = await this.CategoryModel.findById(id);
-    if (!category) throw new NotFoundException('Category not found');
+    if (!category)
+      throw new NotFoundException(
+        await this.i18n.t('service.NOT_FOUND', {
+          args: {
+            name: await this.i18n.t('common.CATEGORY'),
+          },
+        }),
+      );
     if (updateCategoryDto?.name)
       await this._checkValidName(updateCategoryDto.name);
     category = await this.CategoryModel.findByIdAndUpdate(
@@ -60,7 +83,14 @@ export class CategoryService {
 
   async remove(id: string) {
     let category = await this.CategoryModel.findById(id);
-    if (!category) throw new NotFoundException('Category not found');
+    if (!category)
+      throw new NotFoundException(
+        await this.i18n.t('service.NOT_FOUND', {
+          args: {
+            name: await this.i18n.t('common.CATEGORY'),
+          },
+        }),
+      );
     await this.CategoryModel.findByIdAndDelete(id);
   }
 }

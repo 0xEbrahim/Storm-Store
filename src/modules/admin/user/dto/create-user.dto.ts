@@ -11,7 +11,6 @@ import {
   Length,
 } from 'class-validator';
 import { Gender, Roles } from '../Schema/user.schema';
-import { Exclude } from 'class-transformer';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class CreateUserDto {

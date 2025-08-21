@@ -1,0 +1,14 @@
+{
+  "USER": "مستخدم",
+  "BRAND": "ماركة",
+  "CATEGORY": "فئة",
+  "SUB_CATEGORY": "فئة فرعية",
+  "PRODUCT": "منتج",
+  "CART": "عربة تسوق",
+  "ORDER": "طلب",
+  "REVIEW": "مراجعة",
+  "SUPPLIER": "مورد",
+  "TICKET": "تذكرة",
+  "COUPON": "قسيمة",
+  "TAX": "ضريبة"
+}

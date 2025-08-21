@@ -12,6 +12,7 @@ import { Category } from '../category/schema/category.schema';
 import { SubCategory } from '../sub-category/schema/sub-category.schema';
 import { Brand } from '../brand/schema/brand.schema';
 import ApiFeatures from 'src/common/utils/APIFeatures';
+import { I18nService } from 'nestjs-i18n';
 
 @Injectable()
 export class AdminProductService {
@@ -20,16 +21,33 @@ export class AdminProductService {
     @InjectModel(Brand.name) private BrandModel: Model<Brand>,
     @InjectModel(Category.name) private CategoryModel: Model<Category>,
     @InjectModel(SubCategory.name) private SubCategoryModel: Model<SubCategory>,
+    private readonly i18n: I18nService,
   ) {}
 
   private async _CheckValidTitle(title: string) {
     const product = await this.ProductModel.findOne({ title: title });
-    if (product) throw new BadRequestException('Product already exists');
+    if (product)
+      throw new BadRequestException(
+        await this.i18n.t('service.ALREADY_EXISTS', {
+          args: {
+            name: await this.i18n.t('common.PRODUCT'),
+          },
+        }),
+      );
   }
+
   private async _CheckValidCategory(categoryId: string) {
     const category = await this.CategoryModel.findById(categoryId);
-    if (!category) throw new NotFoundException('Category not found');
+    if (!category)
+      throw new NotFoundException(
+        await this.i18n.t('service.NOT_FOUND', {
+          args: {
+            name: await this.i18n.t('common.CATEGORY'),
+          },
+        }),
+      );
   }
+
   private async _CheckValidSubCategory(
     subCategoryId: string,
     category: string,
@@ -38,12 +56,28 @@ export class AdminProductService {
       _id: subCategoryId,
       categoryId: category,
     });
-    if (!subCategory) throw new NotFoundException('Sub category not found');
+    if (!subCategory)
+      throw new NotFoundException(
+        await this.i18n.t('service.NOT_FOUND', {
+          args: {
+            name: await this.i18n.t('common.SUB_CATEGORY'),
+          },
+        }),
+      );
   }
+
   private async _CheckValidBrand(brandId: string) {
     const brand = await this.BrandModel.findById(brandId);
-    if (!brand) throw new NotFoundException('Brand not found');
+    if (!brand)
+      throw new NotFoundException(
+        await this.i18n.t('service.NOT_FOUND', {
+          args: {
+            name: await this.i18n.t('common.BRAND'),
+          },
+        }),
+      );
   }
+
   async create(createProductDto: AdminCreateProductDto) {
     await this._CheckValidTitle(createProductDto.title);
     await this._CheckValidCategory(createProductDto.category);
@@ -59,7 +93,7 @@ export class AdminProductService {
       createProductDto?.discountPrice >= createProductDto.price
     ) {
       throw new BadRequestException(
-        "Discount price can't be more than or equal the original price",
+        await this.i18n.t('service.INVALID_DISCOUNT_PRICE'),
       );
     }
     const product = await this.ProductModel.create(createProductDto);
@@ -81,13 +115,27 @@ export class AdminProductService {
 
   async findOne(id: string) {
     const product = await this.ProductModel.findById(id);
-    if (!product) throw new NotFoundException('Product not found');
+    if (!product)
+      throw new NotFoundException(
+        await this.i18n.t('service.NOT_FOUND', {
+          args: {
+            name: await this.i18n.t('common.PRODUCT'),
+          },
+        }),
+      );
     return { data: { product } };
   }
 
   async update(id: string, updateProductDto: AdminUpdateProductDto) {
     let product = await this.ProductModel.findById(id);
-    if (!product) throw new NotFoundException('Product not found');
+    if (!product)
+      throw new NotFoundException(
+        await this.i18n.t('service.NOT_FOUND', {
+          args: {
+            name: await this.i18n.t('common.PRODUCT'),
+          },
+        }),
+      );
     if (updateProductDto?.title)
       await this._CheckValidTitle(updateProductDto?.title);
     if (updateProductDto?.category)
@@ -107,7 +155,7 @@ export class AdminProductService {
         updateProductDto?.discountPrice >= updateProductDto?.price)
     ) {
       throw new BadRequestException(
-        "Discount price can't be more than or equal the original price",
+        await this.i18n.t('service.INVALID_DISCOUNT_PRICE'),
       );
     }
     product = await this.ProductModel.findByIdAndUpdate(id, updateProductDto, {
@@ -118,7 +166,14 @@ export class AdminProductService {
 
   async remove(id: string) {
     const product = await this.ProductModel.findById(id);
-    if (!product) throw new NotFoundException('Product not found');
+    if (!product)
+      throw new NotFoundException(
+        await this.i18n.t('service.NOT_FOUND', {
+          args: {
+            name: await this.i18n.t('common.PRODUCT'),
+          },
+        }),
+      );
     await this.ProductModel.findByIdAndDelete(id);
   }
 }

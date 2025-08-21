@@ -3,11 +3,13 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import ApiFeatures from 'src/common/utils/APIFeatures';
 import { Category } from 'src/modules/admin/category/schema/category.schema';
+import { I18nService } from 'nestjs-i18n';
 
 @Injectable()
 export class CategoryService {
   constructor(
     @InjectModel(Category.name) private CategoryModel: Model<Category>,
+    private readonly i18n: I18nService,
   ) {}
 
   async findAll(q: any) {
@@ -24,7 +26,14 @@ export class CategoryService {
 
   async findOne(id: string) {
     const category = await this.CategoryModel.findById(id);
-    if (!category) throw new NotFoundException('Category not found');
+    if (!category)
+      throw new NotFoundException(
+        await this.i18n.t('service.NOT_FOUND', {
+          args: {
+            name: await this.i18n.t('common.CATEGORY'),
+          },
+        }),
+      );
     return { data: { category } };
   }
 }

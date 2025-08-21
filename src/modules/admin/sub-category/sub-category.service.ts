@@ -10,12 +10,14 @@ import { SubCategory } from './schema/sub-category.schema';
 import { Model } from 'mongoose';
 import ApiFeatures from 'src/common/utils/APIFeatures';
 import { Category } from '../category/schema/category.schema';
+import { I18nService } from 'nestjs-i18n';
 
 @Injectable()
 export class AdminSubCategoryService {
   constructor(
     @InjectModel(SubCategory.name) private SubCategoryModel: Model<SubCategory>,
     @InjectModel(Category.name) private CategoryModel: Model<Category>,
+    private readonly i18n: I18nService,
   ) {}
 
   private async _CheckValidSubCategoryName(subCategoryName: string) {
@@ -24,12 +26,24 @@ export class AdminSubCategoryService {
     });
     if (subCategory)
       throw new BadRequestException(
-        'There is a sub category which has this name, try another name',
+        await this.i18n.t('service.ALREADY_EXISTS', {
+          args: {
+            name: await this.i18n.t('common.SUB_CATEGORY'),
+          },
+        }),
       );
   }
+
   private async _CheckValidCategoryId(categoryId: string) {
-    const subCategory = await this.CategoryModel.findById(categoryId);
-    if (!subCategory) throw new NotFoundException('Sub category not found');
+    const category = await this.CategoryModel.findById(categoryId);
+    if (!category)
+      throw new NotFoundException(
+        await this.i18n.t('service.NOT_FOUND', {
+          args: {
+            name: await this.i18n.t('common.CATEGORY'),
+          },
+        }),
+      );
   }
 
   async create({ categoryId, name }: AdminCreateSubCategoryDto) {
@@ -61,13 +75,27 @@ export class AdminSubCategoryService {
   async findOne(id: string) {
     const subCategory =
       await this.SubCategoryModel.findById(id).populate('categoryId');
-    if (!subCategory) throw new NotFoundException('Sub category not found');
+    if (!subCategory)
+      throw new NotFoundException(
+        await this.i18n.t('service.NOT_FOUND', {
+          args: {
+            name: await this.i18n.t('common.SUB_CATEGORY'),
+          },
+        }),
+      );
     return { data: { subCategory } };
   }
 
   async update(id: string, updateCategoryDto: AdminUpdateSubCategoryDto) {
     let subCategory = await this.SubCategoryModel.findById(id);
-    if (!subCategory) throw new NotFoundException('Sub category not found');
+    if (!subCategory)
+      throw new NotFoundException(
+        await this.i18n.t('service.NOT_FOUND', {
+          args: {
+            name: await this.i18n.t('common.SUB_CATEGORY'),
+          },
+        }),
+      );
     if (updateCategoryDto?.categoryId)
       await this._CheckValidCategoryId(updateCategoryDto.categoryId);
     if (updateCategoryDto?.name)
@@ -82,7 +110,14 @@ export class AdminSubCategoryService {
 
   async remove(id: string) {
     let subCategory = await this.SubCategoryModel.findById(id);
-    if (!subCategory) throw new NotFoundException('Sub category not found');
+    if (!subCategory)
+      throw new NotFoundException(
+        await this.i18n.t('service.NOT_FOUND', {
+          args: {
+            name: await this.i18n.t('common.SUB_CATEGORY'),
+          },
+        }),
+      );
     await this.SubCategoryModel.findByIdAndDelete(id);
   }
 }
