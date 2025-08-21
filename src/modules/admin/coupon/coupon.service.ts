@@ -9,14 +9,25 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Coupon } from './schema/coupon.schema';
 import { Model } from 'mongoose';
 import ApiFeatures from 'src/common/utils/APIFeatures';
+import { I18nService } from 'nestjs-i18n';
 
 @Injectable()
 export class AdminCouponService {
-  constructor(@InjectModel(Coupon.name) private CouponModel: Model<Coupon>) {}
+  constructor(
+    @InjectModel(Coupon.name) private CouponModel: Model<Coupon>,
+    private readonly i18n: I18nService,
+  ) {}
 
   private async _CheckValidCoupon(_coupon: string) {
     const coupon = await this.CouponModel.findOne({ coupon: _coupon });
-    if (coupon) throw new BadRequestException('Such a coupon already exists');
+    if (coupon)
+      throw new BadRequestException(
+        await this.i18n.t('service.ALREADY_EXISTS', {
+          args: {
+            name: await this.i18n.t('common.COUPON'),
+          },
+        }),
+      );
   }
 
   async create({ coupon: _coupon, discount, expireIn }: AdminCreateCouponDto) {
@@ -43,13 +54,27 @@ export class AdminCouponService {
 
   async findOne(id: string) {
     const coupon = await this.CouponModel.findById(id);
-    if (!coupon) throw new NotFoundException('Coupon not found');
+    if (!coupon)
+      throw new NotFoundException(
+        await this.i18n.t('service.NOT_FOUND', {
+          args: {
+            name: await this.i18n.t('common.COUPON'),
+          },
+        }),
+      );
     return { data: { coupon } };
   }
 
   async update(id: string, updateCouponDto: AdminUpdateCouponDto) {
     let coupon = await this.CouponModel.findById(id);
-    if (!coupon) throw new NotFoundException('Coupon not found');
+    if (!coupon)
+      throw new NotFoundException(
+        await this.i18n.t('service.NOT_FOUND', {
+          args: {
+            name: await this.i18n.t('common.COUPON'),
+          },
+        }),
+      );
     if (updateCouponDto?.coupon)
       await this._CheckValidCoupon(updateCouponDto.coupon);
     coupon = await this.CouponModel.findByIdAndUpdate(id, updateCouponDto, {
@@ -60,7 +85,14 @@ export class AdminCouponService {
 
   async remove(id: string) {
     let coupon = await this.CouponModel.findById(id);
-    if (!coupon) throw new NotFoundException('Coupon not found');
+    if (!coupon)
+      throw new NotFoundException(
+        await this.i18n.t('service.NOT_FOUND', {
+          args: {
+            name: await this.i18n.t('common.COUPON'),
+          },
+        }),
+      );
     await this.CouponModel.findByIdAndDelete(id);
   }
 }

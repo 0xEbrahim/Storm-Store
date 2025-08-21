@@ -8,5 +8,6 @@
   "ORDER": "Order",
   "REVIEW": "Review",
   "SUPPLIER": "Supplier",
-  "TICKET": "Ticket"
+  "TICKET": "Ticket",
+  "COUPON": "Coupon"
 }
