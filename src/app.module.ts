@@ -83,10 +83,12 @@ import {
         global: true,
       }),
     }),
+
+    
     MongooseModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
-        uri: config.get<string>('MONGO_URL'),
+        uri: config.get<string>('ME_CONFIG_MONGODB_URL'),
       }),
     }),
     UserModule,

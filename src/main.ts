@@ -7,6 +7,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import {
   i18nValidationErrorFactory,
   I18nValidationExceptionFilter,
+  I18nValidationPipe,
 } from 'nestjs-i18n';
 
 async function bootstrap() {
@@ -21,6 +22,7 @@ async function bootstrap() {
     new ValidationPipe({
       whitelist: true,
     }),
+    new I18nValidationPipe(),
   );
   const config = new DocumentBuilder()
     .setTitle('Storm Store')
@@ -29,6 +31,6 @@ async function bootstrap() {
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documentFactory);
-  await app.listen(process.env.PORT ?? 3000);
+  await app.listen(process.env.APP_PORT ?? 3000);
 }
 bootstrap();

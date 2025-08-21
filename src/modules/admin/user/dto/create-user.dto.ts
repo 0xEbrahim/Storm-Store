@@ -12,71 +12,76 @@ import {
 } from 'class-validator';
 import { Gender, Roles } from '../Schema/user.schema';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { i18nValidationMessage } from 'nestjs-i18n';
 
 export class CreateUserDto {
   @ApiProperty()
-  @IsString({ message: 'Your name should be a string value' })
+  @IsString({ message: i18nValidationMessage('validation.IS_STRING') })
   @Length(3, 30, {
-    message: 'Your name length should be between 3 and 30 characters',
+    message: i18nValidationMessage('validation.LENGTH', { min: 3, max: 30 }),
   })
-  @IsNotEmpty()
+  @IsNotEmpty({ message: i18nValidationMessage('validation.NOT_EMPTY') })
   name: string;
 
   @ApiProperty()
-  @IsString({ message: 'Your email should be a string value' })
-  @IsEmail({}, { message: 'Please enter a valid email address' })
-  @IsNotEmpty()
+  @IsString({ message: i18nValidationMessage('validation.IS_STRING') })
+  @IsEmail({}, { message: i18nValidationMessage('validation.INVALID_EMAIL') })
+  @IsNotEmpty({ message: i18nValidationMessage('validation.NOT_EMPTY') })
   email: string;
 
   @ApiProperty()
-  @IsString({ message: 'Your password should be a string value' })
+  @IsString({ message: i18nValidationMessage('validation.IS_STRING') })
   @Length(3, 30, {
-    message: 'Your name length should be between 3 and 30 characters',
+    message: i18nValidationMessage('validation.LENGTH', { min: 3, max: 30 }),
   })
-  @IsNotEmpty()
+  @IsNotEmpty({ message: i18nValidationMessage('validation.NOT_EMPTY') })
   password: string;
 
   @ApiPropertyOptional()
-  @IsString({ message: 'Your role should be a string value' })
-  @IsEnum(Roles, { message: 'Roles should be from Admin, user and manager' })
+  @IsString({ message: i18nValidationMessage('validation.IS_STRING') })
+  @IsEnum(Roles, { message: i18nValidationMessage('validation.IS_ENUM_ROLES') })
   @IsOptional()
   role?: string;
 
   @ApiPropertyOptional()
-  @IsString({ message: 'Your avatar should be a string value' })
-  @IsUrl({}, { message: 'Please provide an avatar url' })
+  @IsString({ message: i18nValidationMessage('validation.IS_STRING') })
+  @IsUrl({}, { message: i18nValidationMessage('validation.IS_URL') })
   @IsOptional()
   avatar?: string;
 
   @ApiPropertyOptional()
-  @IsNumber()
+  @IsNumber({}, { message: i18nValidationMessage('validation.IS_NUMBER') })
   @IsOptional()
   age?: number;
 
   @ApiPropertyOptional()
-  @IsString({ message: 'Your phone number should be a string value' })
-  @IsPhoneNumber('EG', { message: 'Provide a valid egyptian phone number' })
+  @IsString({ message: i18nValidationMessage('validation.IS_STRING') })
+  @IsPhoneNumber('EG', {
+    message: i18nValidationMessage('validation.IS_PHONE_NUMBER_EG'),
+  })
   @IsOptional()
   phoneNumber?: string;
 
   @ApiPropertyOptional()
-  @IsString({ message: 'Your gender should be a string value' })
-  @IsEnum(Gender, { message: 'Your gender should be only male or female' })
+  @IsString({ message: i18nValidationMessage('validation.IS_STRING') })
+  @IsEnum(Gender, {
+    message: i18nValidationMessage('validation.IS_ENUM_GENDER'),
+  })
   @IsOptional()
   gender?: string;
 
   @ApiPropertyOptional()
-  @IsString({ message: 'Your address should be a string value' })
+  @IsString({ message: i18nValidationMessage('validation.IS_STRING') })
   @IsOptional()
   address?: string;
 
   @ApiPropertyOptional()
-  @IsString({ message: 'Your verification Code should be a string value' })
+  @IsString({ message: i18nValidationMessage('validation.IS_STRING') })
   @IsOptional()
   verificationCode?: string;
 
   @ApiPropertyOptional()
-  @IsBoolean()
+  @IsBoolean({ message: i18nValidationMessage('validation.IS_BOOLEAN') })
   @IsOptional()
   active?: boolean;
 }

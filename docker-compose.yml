@@ -1,0 +1,28 @@
+services:
+  web:
+    build: .
+    container_name: store_container
+    depends_on:
+      - mongo
+    ports:
+      - '3000:3000'
+
+  mongo:
+    image: mongo
+    container_name: mongo_container
+    restart: always
+    volumes:
+      - mongoData:/data/db
+    env_file:
+      - .env
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    env_file:
+      - .env
+
+volumes:
+  mongoData:
