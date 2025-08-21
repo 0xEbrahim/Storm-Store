@@ -18,5 +18,6 @@
   "UNAUTHORIZED_ACTION": "You are not authorized to do this",
   "SHIPPING_ADDRESS_REQUIRED": "You have to provide a shipping address",
   "NOT_CASH_ORDER": "This order not paid by cash",
-  "ORDER_ALREADY_PAID": "Order already paid"
+  "ORDER_ALREADY_PAID": "Order already paid",
+  "INVALID_DISCOUNT_PRICE": "Discount price can't be more than or equal the original price"
 }

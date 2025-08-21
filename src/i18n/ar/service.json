@@ -18,5 +18,6 @@
   "UNAUTHORIZED_ACTION": "أنت غير مصرح لك بهذا الإجراء",
   "SHIPPING_ADDRESS_REQUIRED": "يجب تقديم عنوان الشحن",
   "NOT_CASH_ORDER": "هذا الطلب لم يتم دفعه نقداً",
-  "ORDER_ALREADY_PAID": "الطلب مدفوع بالفعل"
+  "ORDER_ALREADY_PAID": "الطلب مدفوع بالفعل",
+  "INVALID_DISCOUNT_PRICE": "سعر الخصم لا يمكن أن يكون أكثر من أو يساوي السعر الأصلي"
 }
