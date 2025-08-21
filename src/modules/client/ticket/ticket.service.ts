@@ -9,10 +9,14 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Ticket } from 'src/modules/admin/ticket/schema/ticket.schema';
 import { Model } from 'mongoose';
 import ApiFeatures from 'src/common/utils/APIFeatures';
+import { I18nService } from 'nestjs-i18n';
 
 @Injectable()
 export class ClientTicketService {
-  constructor(@InjectModel(Ticket.name) private TicketModel: Model<Ticket>) {}
+  constructor(
+    @InjectModel(Ticket.name) private TicketModel: Model<Ticket>,
+    private readonly i18n: I18nService,
+  ) {}
 
   async create(createTicketDto: ClientCreateTicketDto, user: string) {
     const ticket = await this.TicketModel.create({
@@ -37,7 +41,13 @@ export class ClientTicketService {
   async findOne(id: string, userId: string) {
     const ticket = await this.TicketModel.findById(id);
     if (!ticket || ticket.user.toString() !== userId.toString())
-      throw new NotFoundException('ticket not found');
+      throw new NotFoundException(
+        await this.i18n.t('service.NOT_FOUND', {
+          args: {
+            name: await this.i18n.t('common.TICKET'),
+          },
+        }),
+      );
     await ticket.populate('user category');
     return { data: { ticket } };
   }
@@ -49,7 +59,9 @@ export class ClientTicketService {
   ) {
     let ticket = await this.TicketModel.findById(id);
     if (!ticket || ticket.user.toString() !== userId.toString())
-      throw new UnauthorizedException('You are not authorize to do this');
+      throw new UnauthorizedException(
+        await this.i18n.t('service.UNAUTHORIZED_ACTION'),
+      );
     ticket = await this.TicketModel.findByIdAndUpdate(id, updateTicketDto, {
       new: true,
     });
@@ -59,7 +71,9 @@ export class ClientTicketService {
   async remove(id: string, userId: string) {
     const ticket = await this.TicketModel.findById(id);
     if (!ticket || ticket.user.toString() !== userId.toString())
-      throw new UnauthorizedException('You are not authorize to do this');
+      throw new UnauthorizedException(
+        await this.i18n.t('service.UNAUTHORIZED_ACTION'),
+      );
     await this.TicketModel.findByIdAndDelete(id);
   }
 }

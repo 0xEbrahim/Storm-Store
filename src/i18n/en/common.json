@@ -7,5 +7,6 @@
   "CART": "Cart",
   "ORDER": "Order",
   "REVIEW": "Review",
-  "SUPPLIER": "Supplier"
+  "SUPPLIER": "Supplier",
+  "TICKET": "Ticket"
 }
