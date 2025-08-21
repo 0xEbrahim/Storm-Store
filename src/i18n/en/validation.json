@@ -1,0 +1,25 @@
+{
+  "IS_STRING": "This field must be a string",
+  "NOT_EMPTY": "This field is required",
+  "INVALID_EMAIL": "email is invalid",
+  "LENGTH": "This field must be between {min} and {max} characters",
+  "IS_ENUM_ROLES": "Role must be one of: Admin, User, Manager",
+  "IS_URL": "Please provide a valid URL",
+  "IS_NUMBER": "This field must be a number",
+  "IS_PHONE_NUMBER_EG": "Please provide a valid Egyptian phone number",
+  "IS_ENUM_GENDER": "Gender must be either Male or Female",
+  "IS_BOOLEAN": "This field must be a boolean value",
+  "fields": {
+    "name": "Name",
+    "email": "Email",
+    "password": "Password",
+    "role": "Role",
+    "avatar": "Avatar",
+    "age": "Age",
+    "phoneNumber": "Phone Number",
+    "gender": "Gender",
+    "address": "Address",
+    "verificationCode": "Verification Code",
+    "active": "Active Status"
+  }
+}
