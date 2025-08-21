@@ -10,17 +10,26 @@ import { Review } from 'src/modules/admin/review/schema/review.schema';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import ApiFeatures from 'src/common/utils/APIFeatures';
+import { I18nService } from 'nestjs-i18n';
 
 @Injectable()
 export class ClientReviewService {
   constructor(
     @InjectModel(Review.name) private ReviewModel: Model<Review>,
     @InjectModel(Product.name) private ProductModel: Model<Product>,
+    private readonly i18n: I18nService,
   ) {}
 
   private async _CheckValidProduct(productId: string) {
     const product = await this.ProductModel.findById(productId);
-    if (!product) throw new NotFoundException('Product not found');
+    if (!product)
+      throw new NotFoundException(
+        await this.i18n.t('service.NOT_FOUND', {
+          args: {
+            name: await this.i18n.t('common.PRODUCT'),
+          },
+        }),
+      );
   }
 
   async create(createReviewDto: ClientCreateReviewDto, userId: string) {
@@ -46,7 +55,14 @@ export class ClientReviewService {
 
   async findOne(id: string) {
     const review = await this.ReviewModel.findById(id);
-    if (!review) throw new NotFoundException('Review not found');
+    if (!review)
+      throw new NotFoundException(
+        await this.i18n.t('service.NOT_FOUND', {
+          args: {
+            name: await this.i18n.t('common.REVIEW'),
+          },
+        }),
+      );
     await review.populate('user');
     return { data: { review } };
   }
@@ -58,7 +74,9 @@ export class ClientReviewService {
   ) {
     let review = await this.ReviewModel.findOne({ _id: id, user: userId });
     if (!review)
-      throw new UnauthorizedException('You are not authorize to do this');
+      throw new UnauthorizedException(
+        await this.i18n.t('service.UNAUTHORIZED_ACTION'),
+      );
     if (updateReviewDto?.product)
       await this._CheckValidProduct(updateReviewDto?.product);
     review = await this.ReviewModel.findByIdAndUpdate(id, updateReviewDto, {
@@ -70,7 +88,9 @@ export class ClientReviewService {
   async remove(id: string, userId: string) {
     const review = await this.ReviewModel.findOne({ _id: id, user: userId });
     if (!review)
-      throw new UnauthorizedException('You are not authorize to do this');
+      throw new UnauthorizedException(
+        await this.i18n.t('service.UNAUTHORIZED_ACTION'),
+      );
     await this.ReviewModel.findByIdAndDelete(id);
   }
 }

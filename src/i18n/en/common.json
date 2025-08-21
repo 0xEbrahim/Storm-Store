@@ -4,5 +4,6 @@
   "CATEGORY": "Category",
   "PRODUCT": "Product",
   "CART": "Cart",
-  "ORDER": "Order"
+  "ORDER": "Order",
+  "REVIEW": "Review"
 }
