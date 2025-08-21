@@ -38,6 +38,7 @@ import {
 import { CacheModule } from '@nestjs/cache-manager';
 import { redisStore } from 'cache-manager-redis-store';
 import { RedisModule } from '@nestjs-modules/ioredis';
+import { BullModule } from '@nestjs/bullmq';
 
 @Module({
   imports: [
@@ -92,6 +93,20 @@ import { RedisModule } from '@nestjs-modules/ioredis';
         url: 'redis://default@127.0.0.1:6379',
       }),
     }),
+    BullModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        connection: {
+          url: config.get<string>('REDIS_URI'),
+        },
+        defaultJobOptions: {
+          attempts: 15,
+          removeOnComplete: 1000,
+          removeOnFail: 3000,
+        },
+      }),
+    }),
+
     MongooseModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
