@@ -27,6 +27,7 @@ import { ClientCartModule } from './modules/client/cart/cart.module';
 import { AdminCartModule } from './modules/admin/cart/cart.module';
 import { AdminOrderModule } from './modules/admin/order/order.module';
 import { ClientOrderModule } from './modules/client/order/order.module';
+import { CloudinaryModule } from './modules/cloudinary/cloudinary.module';
 import path from 'node:path';
 
 @Module({
@@ -91,6 +92,7 @@ import path from 'node:path';
     AdminCartModule,
     AdminOrderModule,
     ClientOrderModule,
+    CloudinaryModule,
   ],
 })
 export class AppModule {}
