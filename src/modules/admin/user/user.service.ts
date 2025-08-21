@@ -8,24 +8,28 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from './Schema/user.schema';
 import { Model } from 'mongoose';
-import { JWTService } from '../../jwt/jwt.service';
 import ApiFeatures from 'src/common/utils/APIFeatures';
+import { I18nService } from 'nestjs-i18n';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel(User.name) private UserModel: Model<User>) {}
+  constructor(
+    @InjectModel(User.name) private UserModel: Model<User>,
+    private readonly i18n: I18nService,
+  ) {}
 
   async create(createUserDto: CreateUserDto) {
-    // return await this.jwt.generateAccessToken({
-    //   id: '68a0c2e0b2f063a4829f23fd',
-    //   active: false,
-    //   role: 'ADMIN',
-    // });
     const userExist = await this.UserModel.findOne({
       email: createUserDto.email,
     });
     if (userExist) {
-      throw new BadRequestException('Email is already exists.');
+      throw new BadRequestException(
+        await this.i18n.t('service.ALREADY_EXISTS', {
+          args: {
+            name: await this.i18n.t('common.USER'),
+          },
+        }),
+      );
     }
     const user = await this.UserModel.create(createUserDto);
     return { data: { user } };
@@ -46,13 +50,27 @@ export class UserService {
 
   async findOne(id: string) {
     const user = await this.UserModel.findById(id);
-    if (!user) throw new NotFoundException('User not found');
+    if (!user)
+      throw new NotFoundException(
+        await this.i18n.t('service.NOT_FOUND', {
+          args: {
+            name: await this.i18n.t('common.USER'),
+          },
+        }),
+      );
     return { data: { user } };
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
     let user = await this.UserModel.findById(id);
-    if (!user) throw new NotFoundException('User not found');
+    if (!user)
+      throw new NotFoundException(
+        await this.i18n.t('service.NOT_FOUND', {
+          args: {
+            name: await this.i18n.t('common.USER'),
+          },
+        }),
+      );
     user = await this.UserModel.findByIdAndUpdate(id, updateUserDto, {
       new: true,
     });
@@ -61,7 +79,14 @@ export class UserService {
 
   async remove(id: string) {
     const user = await this.UserModel.findById(id);
-    if (!user) throw new NotFoundException('User not found');
+    if (!user)
+      throw new NotFoundException(
+        await this.i18n.t('service.NOT_FOUND', {
+          args: {
+            name: await this.i18n.t('common.USER'),
+          },
+        }),
+      );
     await this.UserModel.findByIdAndDelete(id);
   }
 }
