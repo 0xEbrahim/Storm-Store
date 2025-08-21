@@ -19,5 +19,6 @@
   "SHIPPING_ADDRESS_REQUIRED": "You have to provide a shipping address",
   "NOT_CASH_ORDER": "This order not paid by cash",
   "ORDER_ALREADY_PAID": "Order already paid",
-  "INVALID_DISCOUNT_PRICE": "Discount price can't be more than or equal the original price"
+  "INVALID_DISCOUNT_PRICE": "Discount price can't be more than or equal the original price",
+  "TAX_FIELDS_REQUIRED": "Please fill all the required fields: [shippingPrice, taxPrice]"
 }
