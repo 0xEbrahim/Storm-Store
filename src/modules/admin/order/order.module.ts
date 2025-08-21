@@ -9,10 +9,12 @@ import { JWTService } from 'src/modules/jwt/jwt.service';
 import { EmailService } from 'src/modules/email/email.service';
 import { Cart, CartSchema } from '../cart/schema/cart.schema';
 import { Product, ProductSchema } from '../product/schema/product.schema';
+import { BullModule } from '@nestjs/bullmq';
 
 @Module({
   imports: [
     JwtModule,
+    BullModule.registerQueue({ name: 'email' }),
     MongooseModule.forFeature([
       { name: Order.name, schema: OrderSchema },
       { name: User.name, schema: UserSchema },

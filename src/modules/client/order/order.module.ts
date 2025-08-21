@@ -16,10 +16,12 @@ import {
   ProductSchema,
 } from 'src/modules/admin/product/schema/product.schema';
 import { EmailService } from 'src/modules/email/email.service';
+import { BullModule } from '@nestjs/bullmq';
 
 @Module({
   imports: [
     JwtModule,
+    BullModule.registerQueue({ name: 'email' }),
     MongooseModule.forFeature([
       { name: Order.name, schema: OrderSchema },
       { name: User.name, schema: UserSchema },

@@ -15,6 +15,8 @@ import { EmailService, EmailType } from 'src/modules/email/email.service';
 import { AdminUpdateOrderDto } from './dto/UpdateCash.dto';
 import path from 'node:path';
 import { I18nService } from 'nestjs-i18n';
+import { InjectQueue } from '@nestjs/bullmq';
+import { Queue } from 'bullmq';
 
 @Injectable()
 export class AdminOrderService {
@@ -23,6 +25,7 @@ export class AdminOrderService {
     @InjectModel(Cart.name) private CartModel: Model<Cart>,
     @InjectModel(User.name) private UserModel: Model<User>,
     @InjectModel(Product.name) private ProductModel: Model<Product>,
+    @InjectQueue('email') private emailQueue: Queue,
     private config: ConfigService,
     private EmailService: EmailService,
     private readonly i18n: I18nService,
@@ -81,7 +84,7 @@ export class AdminOrderService {
           id: cart.id,
         },
       };
-      await this.EmailService.sendMail(data);
+      await this.emailQueue.add('order-email', data, { backoff: 2000 });
       await this.CartModel.findOneAndUpdate(
         { user: order.user.toString() },
         { cartItems: [], totalPrice: 0 },
