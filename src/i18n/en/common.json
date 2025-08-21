@@ -6,5 +6,6 @@
   "PRODUCT": "Product",
   "CART": "Cart",
   "ORDER": "Order",
-  "REVIEW": "Review"
+  "REVIEW": "Review",
+  "SUPPLIER": "Supplier"
 }
