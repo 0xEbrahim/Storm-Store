@@ -8,5 +8,13 @@
   "OLD_PASSWORD": "كلمة المرور القديمة غير صحيحة",
   "BRAND_NOT_FOUND": "العلامة التجارية غير موجودة",
   "CATEGORY_NOT_FOUND": "الفئة غير موجودة",
-  "PRODUCT_NOT_FOUND": "المنتج غير موجود"
+  "PRODUCT_NOT_FOUND": "المنتج غير موجود",
+  "INSUFFICIENT_QUANTITY": "كمية المنتج غير كافية",
+  "EMPTY_CART_COUPON": "عربة التسوق فارغة، أضف عناصر لاستخدام القسائم",
+  "INVALID_COUPON": "قسيمة غير صالحة أو منتهية الصلاحية",
+  "COUPON_ALREADY_USED": "لقد استخدمت هذه القسيمة بالفعل",
+  "FULL_DISCOUNT_ALREADY_APPLIED": "لقد طبقتم بالفعل خصم 100٪",
+  "EMPTY_CART": "عربة التسوق فارغة",
+  "PRODUCT_NOT_IN_CART": "المنتج غير موجود في عربة التسوق",
+  "PRODUCT_REMOVED_FROM_CART": "تم إزالة المنتج من عربة التسوق"
 }

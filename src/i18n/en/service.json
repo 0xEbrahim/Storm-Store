@@ -8,5 +8,13 @@
   "OLD_PASSWORD": "Old password is incorrect",
   "BRAND_NOT_FOUND": "Brand not found",
   "CATEGORY_NOT_FOUND": "Category not found",
-  "PRODUCT_NOT_FOUND": "Product not found"
+  "PRODUCT_NOT_FOUND": "Product not found",
+  "INSUFFICIENT_QUANTITY": "Product quantity is not enough",
+  "EMPTY_CART_COUPON": "Your cart is empty, add something to be able to use coupons",
+  "INVALID_COUPON": "Invalid or expired coupon",
+  "COUPON_ALREADY_USED": "You already used this coupon",
+  "FULL_DISCOUNT_ALREADY_APPLIED": "You have already applied 100% discount",
+  "EMPTY_CART": "Your cart is empty",
+  "PRODUCT_NOT_IN_CART": "Product does not exist in your cart",
+  "PRODUCT_REMOVED_FROM_CART": "Product removed from cart"
 }
