@@ -1,0 +1,2880 @@
+{
+	"info": {
+		"_postman_id": "a1f6d2fa-ce21-4b8c-a745-4ebb1ecf0574",
+		"name": "Storm Store",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24393606"
+	},
+	"item": [
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "User",
+					"item": [
+						{
+							"name": "Create user",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-lang",
+										"value": "ar",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"Ebrahim\",\r\n    \"email\":\"ebrahim5478423email.com\",\r\n    \"password\": \"ibrahim123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/admin/user",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"admin",
+										"user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get all users",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/admin/user",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"admin",
+										"user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update user",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"Mohamed Saeed\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/admin/user/68a1b3a645c014ffe65bacf4",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"admin",
+										"user",
+										"68a1b3a645c014ffe65bacf4"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get one user",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/admin/user",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"admin",
+										"user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete user",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/admin/user",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"admin",
+										"user"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Category",
+					"item": [
+						{
+							"name": "Create category",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"Plastics\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/admin/category/",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"admin",
+										"category",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get all categories",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"Electronics\"\r\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/admin/category/?fields=name&sort=-name",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"admin",
+										"category",
+										""
+									],
+									"query": [
+										{
+											"key": "fields",
+											"value": "name"
+										},
+										{
+											"key": "sort",
+											"value": "-name"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update category",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"Iphones\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/admin/category/68a1e05b93408b96c69cf796",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"admin",
+										"category",
+										"68a1e05b93408b96c69cf796"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete category",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/admin/category/68a1e02d59cb8142acf66965",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"admin",
+										"category",
+										"68a1e02d59cb8142acf66965"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Find One",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/admin/category/68a1e078e67d5ac3820ebccf",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"admin",
+										"category",
+										"68a1e078e67d5ac3820ebccf"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Sub category",
+					"item": [
+						{
+							"name": "Create sub category",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"Iphone\",\r\n    \"categoryId\":\"68a1e078e67d5ac3820ebccf\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/admin/subCategory/",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"admin",
+										"subCategory",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get all sub categories",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"Plastics\"\r\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/admin/subCategory/",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"admin",
+										"subCategory",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update sub category",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"Huawie\",\r\n    \"categoryId\" : \"68a1e4df78f9ec5681c9f879\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/admin/subCategory/68a342b4f49a62a6ed731491",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"admin",
+										"subCategory",
+										"68a342b4f49a62a6ed731491"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete sub category",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/admin/subCategory/68a342b4f49a62a6ed731491",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"admin",
+										"subCategory",
+										"68a342b4f49a62a6ed731491"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "FindOne",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/admin/subCategory/68a342a1f49a62a6ed731488",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"admin",
+										"subCategory",
+										"68a342a1f49a62a6ed731488"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Brand",
+					"item": [
+						{
+							"name": "Create brand",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"Iphone\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/admin/brand/",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"admin",
+										"brand",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get all brands",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"Plastics\"\r\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/admin/brand/?limit=1",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"admin",
+										"brand",
+										""
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update brand",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"Huawie\"\r\n\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/admin/brand/68a34a7dfce71b19a24d00c4",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"admin",
+										"brand",
+										"68a34a7dfce71b19a24d00c4"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete brand",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/admin/brand/68a34a7dfce71b19a24d00c4",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"admin",
+										"brand",
+										"68a34a7dfce71b19a24d00c4"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "FindOne",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/admin/brand/68a34a7dfce71b19a24d00c4",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"admin",
+										"brand",
+										"68a34a7dfce71b19a24d00c4"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Coupon",
+					"item": [
+						{
+							"name": "Create",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"coupon\":\"AADAAA\",\r\n    \"discount\":1000,\r\n    \"expireIn\": \"2026-08-18\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/admin/coupon/",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"admin",
+										"coupon",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get all",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/admin/coupon/",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"admin",
+										"coupon",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get one",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/admin/coupon/68a751c2f6a781ad8a6b37c8",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"admin",
+										"coupon",
+										"68a751c2f6a781ad8a6b37c8"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update one",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"coupon\":\"AAAACV\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/admin/coupon/68a35cdca0afec845dcbf200",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"admin",
+										"coupon",
+										"68a35cdca0afec845dcbf200"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete one",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/admin/coupon/68a35cdca0afec845dcbf200",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"admin",
+										"coupon",
+										"68a35cdca0afec845dcbf200"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Supplier",
+					"item": [
+						{
+							"name": "Create",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"Sara\",\r\n    \"website\":\"www.github.com/0xEbrahim\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/admin/supplier",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"admin",
+										"supplier"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get all",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/admin/supplier?limit=1",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"admin",
+										"supplier"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get one",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/admin/supplier/68a36b58a7ebf2eb12e7fbd6",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"admin",
+										"supplier",
+										"68a36b58a7ebf2eb12e7fbd6"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update one",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"Arsenik\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/admin/supplier/68a36b58a7ebf2eb12e7fbd6",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"admin",
+										"supplier",
+										"68a36b58a7ebf2eb12e7fbd6"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete one",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/admin/supplier/68a36b58a7ebf2eb12e7fbd6",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"admin",
+										"supplier",
+										"68a36b58a7ebf2eb12e7fbd6"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Ticket",
+					"item": [
+						{
+							"name": "Find all",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/admin/ticket",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"admin",
+										"ticket"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Find One",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/admin/ticket",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"admin",
+										"ticket"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Tax",
+					"item": [
+						{
+							"name": "Upsert",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"shippingPrice\":178\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/admin/tax",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"admin",
+										"tax"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"shippingPrice\":178\r\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/admin/tax",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"admin",
+										"tax"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"shippingPrice\":178\r\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/admin/tax",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"admin",
+										"tax"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Product",
+					"item": [
+						{
+							"name": "create",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\":\"dfsgsdgsc\",\r\n    \"description\":\"This is a product which has all kinds of milk-shakes, please order from  us now\",\r\n    \"price\":17,\r\n    \"discountPrice\":10,\r\n    \"quantity\":14,\r\n    \"mainImage\":\"www.google.com\",\r\n    \"category\":\"68a75cd94884cfaf178697ba\",\r\n    \"images\":[\"ww.ggoe\",\"sss\"]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/admin/product",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"admin",
+										"product"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\":\"Phones\",\r\n    \"description\":\"This is a product which has all kinds of milk-shakes, please order from  us now\",\r\n    \"price\":500,\r\n    \"discountPrice\":140,\r\n    \"quantity\":14,\r\n    \"mainImage\":\"www.google.com\",\r\n    \"category\":\"68a1e078e67d5ac3820ebccf\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/admin/product/68a4496b6d637811b8269650",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"admin",
+										"product",
+										"68a4496b6d637811b8269650"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get all",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/admin/product?limit=2",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"admin",
+										"product"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get one",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/admin/product/68a4496b6d637811b8269650",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"admin",
+										"product",
+										"68a4496b6d637811b8269650"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete one",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/admin/product/68a4496b6d637811b8269650",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"admin",
+										"product",
+										"68a4496b6d637811b8269650"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Review",
+					"item": [
+						{
+							"name": "Create",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"text\":\"Nice gfproduct fgroyijo\",\r\n    \"rating\": 4,\r\n    \"product\":\"68a44b86061e459b00279da7\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/admin/review",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"admin",
+										"review"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete one",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"text\":\"Nice product fr\",\r\n    \"rating\": 1,\r\n    \"product\":\"68a44b86061e459b00279da7\"\r\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/admin/review/68a462e25d62c7e12a061b56",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"admin",
+										"review",
+										"68a462e25d62c7e12a061b56"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update review",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n      \"rating\": 0\r\n   \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/admin/review/68a4630bb7a76f52ad488ae3",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"admin",
+										"review",
+										"68a4630bb7a76f52ad488ae3"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get one",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/admin/review/68a4683bd04e622fb1ca7095",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"admin",
+										"review",
+										"68a4683bd04e622fb1ca7095"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Find all",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/admin/review/?limit=1",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"admin",
+										"review",
+										""
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Cart",
+					"item": [
+						{
+							"name": "Find one",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/admin/cart/68a49a54c386166cd53981f2",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"admin",
+										"cart",
+										"68a49a54c386166cd53981f2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Find all",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/admin/cart/",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"admin",
+										"cart",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Order",
+					"item": [
+						{
+							"name": "Update paid cash",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n   \"isPaid\":true\r\n   ,\"isDeliverd\":true\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/admin/order/checkout/68a4c787b78e058932b19631/cash",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"admin",
+										"order",
+										"checkout",
+										"68a4c787b78e058932b19631",
+										"cash"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Client",
+			"item": [
+				{
+					"name": "User",
+					"item": [
+						{
+							"name": "Get profile",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/user/me",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"user",
+										"me"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update profile",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n   \"phoneNumber\":\"01557063841\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/user/me",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"user",
+										"me"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Deactivate account",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{URL}}/user/me",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"user",
+										"me"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Category",
+					"item": [
+						{
+							"name": "Get one",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-lang",
+										"value": "ar",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{URL}}/category/68a1e4df78f9ec5681c9f879",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"category",
+										"68a1e4df78f9ec5681c9f879"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Find all",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/category/?limit=1",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"category",
+										""
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Sub category",
+					"item": [
+						{
+							"name": "Get one",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/subCategory/68a342a1f49a62a6ed731488",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"subCategory",
+										"68a342a1f49a62a6ed731488"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Find all",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/subCategory/?limit=1",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"subCategory",
+										""
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Brand",
+					"item": [
+						{
+							"name": "Get all brands",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/brand/?limit=1",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"brand",
+										""
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get one",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-lang",
+										"value": "ar",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{URL}}/brand/68a34a6dfce71b19a24d00bf",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"brand",
+										"68a34a6dfce71b19a24d00bf"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Supplier",
+					"item": [
+						{
+							"name": "Get All",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/supplier",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"supplier"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get One",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/supplier/68a36b54a7ebf2eb12e7fbd2",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"supplier",
+										"68a36b54a7ebf2eb12e7fbd2"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Ticket",
+					"item": [
+						{
+							"name": "Create",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\":\"some MANNNNAAA\",\r\n    \"text\":\"I need some milk please\",\r\n    \"quantity\":12,\r\n    \"category\":\"68a1e078e67d5ac3820ebccf\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/ticket",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"ticket"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get one",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\":\"some milk\",\r\n    \"text\":\"I need some milk please\",\r\n    \"quantity\":12,\r\n    \"category\":\"68a1e078e67d5ac3820ebccf\"\r\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/ticket/68a3835cee082ad9955fd822",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"ticket",
+										"68a3835cee082ad9955fd822"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get all",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\":\"some milk\",\r\n    \"text\":\"I need some milk please\",\r\n    \"quantity\":12,\r\n    \"category\":\"68a1e078e67d5ac3820ebccf\"\r\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/ticket",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"ticket"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update one",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\":\"I know\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/ticket/68a3835cee082ad9955fd822",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"ticket",
+										"68a3835cee082ad9955fd822"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete one",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\":\"some milk\",\r\n    \"text\":\"I need some milk please\",\r\n    \"quantity\":12,\r\n    \"category\":\"68a1e078e67d5ac3820ebccf\"\r\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/ticket/68a3835cee082ad9955fd822",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"ticket",
+										"68a3835cee082ad9955fd822"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Product",
+					"item": [
+						{
+							"name": "Get All",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/product",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"product"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get one",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/product/68a44b8e061e459b00279dad",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"product",
+										"68a44b8e061e459b00279dad"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Review",
+					"item": [
+						{
+							"name": "Create",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"text\":\"Nice gfproduct fgroyijo\",\r\n    \"rating\": 4,\r\n    \"product\":\"68a44b86061e459b00279da7\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/review",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"review"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get one",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/review/68a4683bd04e622fb1ca7095",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"review",
+										"68a4683bd04e622fb1ca7095"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get all",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/review?rating[gte]=3",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"review"
+									],
+									"query": [
+										{
+											"key": "rating[gte]",
+											"value": "3"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update one",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"rating\": 5\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/review/68a4683bd04e622fb1ca7095",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"review",
+										"68a4683bd04e622fb1ca7095"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete one",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/review/68a4683bd04e622fb1ca7095",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"review",
+										"68a4683bd04e622fb1ca7095"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Cart",
+					"item": [
+						{
+							"name": "Add to cart",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"productId\":\"68a449526d637811b826964a\",\r\n    \"quantity\":10\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/cart",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"cart"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Find cart",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/cart",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"cart"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update cart",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "delete product from cart",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"productId\":\"68a44b8e061e459b00279dad\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/cart",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"cart"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Apply coupon",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/cart/coupon/AADAAA",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"cart",
+										"coupon",
+										"AADAAA"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Order",
+					"item": [
+						{
+							"name": "Order",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"shippingAddress\":\"Cairo, Egypt\",\r\n    \"paymentMethod\":\"Card\"\r\n    \r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/order/checkout",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"order",
+										"checkout"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Sign-Up",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-lang",
+								"value": "ar",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"Mohamed\",\r\n    \"email\":\"elsayedebrahim603@gmail.com\",\r\n    \"password\":\"123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/auth/sign-up",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"auth",
+								"sign-up"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sign In",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"jwt\", pm.response.json().token)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-lang",
+								"value": "ar",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"elsayedebrahim603@gmail.com\",\r\n    \"password\":\"123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/auth/sign-in",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"auth",
+								"sign-in"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Forgot password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-lang",
+								"value": "ar",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"elsayedebrahim603@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/auth/forgot-password",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"auth",
+								"forgot-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reset Password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"password\":\"ibrahim\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/auth/reset-password/b7d135efd180e665f236aa9d5105f85b27e5e5c8d22b039509f4044631bb32a1",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"auth",
+								"reset-password",
+								"b7d135efd180e665f236aa9d5105f85b27e5e5c8d22b039509f4044631bb32a1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change password",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"oldPassword\":\"ibrahim\",\r\n   \"newPassword\":\"123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/auth/change-password",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"auth",
+								"change-password"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Uploads",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-lang",
+						"value": "ar",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": []
+						}
+					]
+				},
+				"url": {
+					"raw": "{{URL}}/cloudinary/",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"cloudinary",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
