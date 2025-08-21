@@ -17,6 +17,7 @@ import path from 'node:path';
 import { ResetPasswordDTO } from './dto/reset-password.dto';
 import { ChangePasswordDTO } from './dto/change-password.dto';
 import { Cart } from 'src/modules/admin/cart/schema/cart.schema';
+import { I18n, I18nContext, I18nService } from 'nestjs-i18n';
 
 @Injectable()
 export class AuthService {
@@ -26,11 +27,19 @@ export class AuthService {
     private jwt: JWTService,
     private emailService: EmailService,
     private config: ConfigService,
+    private readonly I18n: I18nService,
   ) {}
 
   async SignUp({ email, name, password }: SignUpDTO) {
     let user = await this.UserModel.findOne({ email: email });
-    if (user) throw new BadRequestException('Email already exists');
+    if (user)
+      throw new BadRequestException(
+        await this.I18n.t('service.ALREADY_EXISTS', {
+          args: {
+            name: await this.I18n.t('common.USER'),
+          },
+        }),
+      );
     user = await this.UserModel.create({ name, email, password });
     await this.CartModel.create({ user: user._id });
     return { data: { user } };
@@ -39,7 +48,7 @@ export class AuthService {
   async SignIn({ email, password }: SignInDTO) {
     let user = await this.UserModel.findOne({ email });
     if (!user || !(await user.comparePasswords(password ?? ''))) {
-      throw new BadRequestException('Wrong email or password');
+      throw new BadRequestException(await this.I18n.t('service.WRONG_CRED'));
     }
     const payload = {
       id: user.id,
@@ -53,7 +62,7 @@ export class AuthService {
   async forgotPassword({ email }: ForgotPasswordDTO) {
     let user = await this.UserModel.findOne({ email });
     if (!user) {
-      return { message: 'Password reset code sent successfully' };
+      return { message: await this.I18n.t('service.PASSWORD_EMAIL') };
     }
     const code = await user.createPasswordResetCode();
     await user.save();
@@ -70,7 +79,7 @@ export class AuthService {
       },
     };
     await this.emailService.sendMail(data);
-    return { message: 'Password reset code sent successfully' };
+    return { message: await this.I18n.t('service.PASSWORD_EMAIL') };
   }
 
   async resetPassword(code: string, { password }: ResetPasswordDTO) {
@@ -84,12 +93,14 @@ export class AuthService {
       !user?.forgotPasswordCodeExpiresIn ||
       user?.forgotPasswordCodeExpiresIn <= new Date(Date.now())
     ) {
-      throw new BadRequestException('Invalid reset password token');
+      throw new BadRequestException(
+        await this.I18n.t('service.INVALID_PASS_TOKEN'),
+      );
     }
     user.updatePassword();
     console.log(password);
     await user.save();
-    return { message: 'Password updated successfully' };
+    return { message: this.I18n.t('service.PASSWORD_SUC_RESET') };
   }
 
   async changePassword(
@@ -101,11 +112,18 @@ export class AuthService {
      *  - Blacklist token
      */
     const user = await this.UserModel.findById(userId);
-    if (!user) throw new NotFoundException('User not found');
+    if (!user)
+      throw new NotFoundException(
+        await this.I18n.t('service.NOT_FOUND', {
+          args: {
+            name: await this.I18n.t('common.USER'),
+          },
+        }),
+      );
     if (!(await user.comparePasswords(oldPassword)))
-      throw new BadRequestException('wrong old password');
+      throw new BadRequestException(await this.I18n.t('service.OLD_PASSWORD'));
     user.password = newPassword;
     await user.save();
-    return { data: { user }, message: 'Password updated successfully' };
+    return { data: { user }, message: 'service.PASSWORD_SUC_RESET' };
   }
 }
