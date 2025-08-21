@@ -31,6 +31,7 @@ export class ClientTicketService {
       user: user,
       ...createTicketDto,
     });
+    await this._INVALIDATE_TICKET_CACHE();
     return { data: { ticket } };
   }
 

@@ -43,6 +43,7 @@ export class AdminSupplierService {
   async create(createSupplierDto: AdminCreateSupplierDto) {
     await this._checkValidName(createSupplierDto.name);
     const supplier = await this.SupplierModel.create(createSupplierDto);
+    await this._INVALIDATE_SUPPLIER_CACHE();
     return { data: { supplier } };
   }
 

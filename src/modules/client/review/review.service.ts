@@ -47,6 +47,7 @@ export class ClientReviewService {
       ...createReviewDto,
       user: userId,
     });
+    await this._INVALIDATE_REVIEW_CACHE();
     return { data: { review } };
   }
 

@@ -42,6 +42,7 @@ export class CategoryService {
   async create(createCategoryDto: AdminCreateCategoryDto) {
     await this._checkValidName(createCategoryDto.name);
     const category = await this.CategoryModel.create(createCategoryDto);
+    await this._INVALIDATE_CATEGORY_CACHE();
     return { data: { category } };
   }
 
