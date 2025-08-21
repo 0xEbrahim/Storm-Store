@@ -18,12 +18,15 @@ import { ResetPasswordDTO } from './dto/reset-password.dto';
 import { ChangePasswordDTO } from './dto/change-password.dto';
 import { Cart } from 'src/modules/admin/cart/schema/cart.schema';
 import { I18n, I18nContext, I18nService } from 'nestjs-i18n';
+import { InjectQueue } from '@nestjs/bullmq';
+import { Queue } from 'bullmq';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectModel(User.name) private UserModel: Model<User>,
     @InjectModel(Cart.name) private CartModel: Model<Cart>,
+    @InjectQueue('email') private emailQueue: Queue,
     private jwt: JWTService,
     private emailService: EmailService,
     private config: ConfigService,
@@ -78,7 +81,7 @@ export class AuthService {
         expireMinutes: '10',
       },
     };
-    await this.emailService.sendMail(data);
+    await this.emailQueue.add('resetEmail', data, { backoff: 2000 });
     return { message: await this.I18n.t('service.PASSWORD_EMAIL') };
   }
 

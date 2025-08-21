@@ -18,6 +18,8 @@ import { Product } from 'src/modules/admin/product/schema/product.schema';
 import { EmailService, EmailType } from 'src/modules/email/email.service';
 import path from 'node:path';
 import { I18nService } from 'nestjs-i18n';
+import { Queue } from 'bullmq';
+import { InjectQueue } from '@nestjs/bullmq';
 
 @Injectable()
 export class ClientOrderService {
@@ -28,6 +30,7 @@ export class ClientOrderService {
     @InjectModel(Tax.name) private TaxModel: Model<Tax>,
     @InjectModel(User.name) private UserModel: Model<User>,
     @InjectModel(Product.name) private ProductModel: Model<Product>,
+    @InjectQueue('email') private emailQueue: Queue,
     private config: ConfigService,
     private EmailService: EmailService,
     private readonly i18n: I18nService,
@@ -208,8 +211,7 @@ export class ClientOrderService {
             id: cart.id,
           },
         };
-
-        await this.EmailService.sendMail(data);
+        await this.emailQueue.add('user-order', data, { backoff: 2000 });
         break;
       default:
         console.log(`Unhandled event type ${event.type}`);
